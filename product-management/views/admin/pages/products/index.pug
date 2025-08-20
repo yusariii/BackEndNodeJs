@@ -3,34 +3,80 @@ extends ../../layouts/default.pug
 block main 
     h1 Products
 
-    table.table.table-hover.table-sm
-        thead 
-            tr 
-                th STT
-                th Hình ảnh
-                th Tiêu đề
-                th Giá
-                th Trạng thái
-                th Hành động
-            
-        tbody 
-            each item, index in products
-                tr 
-                    td #{index + 1}
-                    td 
-                        img(src=item.thumbnail 
-                            alt=item.title
-                            width="100px"
-                            height="auto"
-                        )
-                    td #{item.title}
-                    td #{item.price}
-                    td 
-                        a(href="#" 
-                            class=`badge ${item.status === "active" ? "bg-success" : "bg-danger"}`
-                             style="text-decoration: none;"
-                        )
-                            | #{item.status === "active" ? "Hoạt động" : "Dừng hoạt động"}
-                    td 
-                        button(class="btn btn-warning btn-sm") Sửa
-                        button(class="btn btn-danger btn-sm ms-1") Xóa
+    .card.mb-3 
+        .card-header Bộ lọc và tìm kiếm 
+        .card-body  
+            .row 
+                .col-6
+                    each item in filterButton
+                        button(
+                            class=`btn btn-sm ms-1 btn-outline-success ${item.class}`
+                            btn-active=item.status
+                        ) #{item.name}
+                        //- button(
+                        //-     class="btn btn-sm ms-1 btn-outline-success active"
+                        //-     btn-active=""
+                        //- ) Tất cả
+                        //- button(
+                        //-     class="btn btn-sm ms-1 btn-outline-success"
+                        //-     btn-active="active"
+                        //- ) Hoạt động
+                        //- button(
+                        //-     class="btn btn-sm ms-1 btn-outline-success"
+                        //-     btn-active="inactive"
+                        //- ) Dừng hoạt động
+                .col-6 
+                    form(id="form-search")
+                        .input-group
+                            input(
+                                type= "text"
+                                placeholder= "Nhập từ khóa"
+                                name= "keyword"
+                                class= "form-control"
+                            )
+                            .input-group-append
+                                button(
+                                    class= "btn btn-success"
+                                    type= "submit"
+                                ) Tìm kiếm
+
+
+    .card.mb-3 
+        .card-header Sản phẩm
+        .card-body 
+            table.table.table-hover.table-sm
+                thead 
+                    tr 
+                        th STT
+                        th Hình ảnh
+                        th Tiêu đề
+                        th Giá
+                        th Trạng thái
+                        th Hành động
+                    
+                tbody 
+                    if (products.length > 0)
+                        each item, index in products
+                            tr 
+                                td #{index + 1}
+                                td 
+                                    img(src=item.thumbnail 
+                                        alt=item.title
+                                        width="100px"
+                                        height="auto"
+                                    )
+                                td #{item.title}
+                                td #{item.price}$
+                                td 
+                                    a(href="#" 
+                                        class=`badge ${item.status === "active" ? "bg-success" : "bg-danger"}`
+                                        style="text-decoration: none;"
+                                    )
+                                        | #{item.status === "active" ? "Hoạt động" : "Dừng hoạt động"}
+                                td 
+                                    button(class="btn btn-warning btn-sm") Sửa
+                                    button(class="btn btn-danger btn-sm ms-1") Xóa
+                    else  
+                        tr
+                            td(colspan="6" class="text-center") 
+                                p(class="mt-3 mb-3") Không tồn tại sản phẩm nào.
