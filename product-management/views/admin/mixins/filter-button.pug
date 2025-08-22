@@ -1,0 +1,18 @@
+mixin filter-button(filterButton)
+    each item in filterButton
+        button(
+            class=`btn btn-sm ms-1 btn-outline-success ${item.class}`
+            btn-active=item.status
+         ) #{item.name}
+    //- button(
+    //-     class="btn btn-sm ms-1 btn-outline-success active"
+    //-     btn-active=""
+    //- ) Tất cả
+    //- button(
+    //-     class="btn btn-sm ms-1 btn-outline-success"
+    //-     btn-active="active"
+    //- ) Hoạt động
+    //- button(
+    //-     class="btn btn-sm ms-1 btn-outline-success"
+    //-     btn-active="inactive"
+    //- ) Dừng hoạt động

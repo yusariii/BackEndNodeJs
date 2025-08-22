@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
-
+include ../../mixins/filter-button.pug
+include ../../mixins/form-search.pug
 block main 
     h1 Products
 
@@ -8,37 +9,9 @@ block main
         .card-body  
             .row 
                 .col-6
-                    each item in filterButton
-                        button(
-                            class=`btn btn-sm ms-1 btn-outline-success ${item.class}`
-                            btn-active=item.status
-                        ) #{item.name}
-                        //- button(
-                        //-     class="btn btn-sm ms-1 btn-outline-success active"
-                        //-     btn-active=""
-                        //- ) Tất cả
-                        //- button(
-                        //-     class="btn btn-sm ms-1 btn-outline-success"
-                        //-     btn-active="active"
-                        //- ) Hoạt động
-                        //- button(
-                        //-     class="btn btn-sm ms-1 btn-outline-success"
-                        //-     btn-active="inactive"
-                        //- ) Dừng hoạt động
+                    +filter-button(filterButton) 
                 .col-6 
-                    form(id="form-search")
-                        .input-group
-                            input(
-                                type= "text"
-                                placeholder= "Nhập từ khóa"
-                                name= "keyword"
-                                class= "form-control"
-                            )
-                            .input-group-append
-                                button(
-                                    class= "btn btn-success"
-                                    type= "submit"
-                                ) Tìm kiếm
+                    +form-search(keyword)
 
 
     .card.mb-3 

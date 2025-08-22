@@ -1,35 +1,12 @@
 const Product = require("../../models/product.model")
-
+const filterButtonHelper = require("../../helpers/filterButton")
+const filterKeywordHelper = require("../../helpers/filterKeyword")
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     // console.log(req.query.status)
-
-    const filterButton = [
-        {
-            name: "Tất cả",
-            status: "",
-            class: ""
-        },
-        {
-            name: "Hoạt động",
-            status: "active",
-            class: ""
-        },
-        {
-            name: "Dừng hoạt động",
-            status: "inactive",
-            class: ""
-        },
-    ]
-
-    if (req.query.status) {
-        const index = filterButton.findIndex(item => item.status == req.query.status)
-        filterButton[index].class = "active"
-    } else {
-        const index = filterButton.findIndex(item => item.status == "")
-        filterButton[index].class = "active"
-    }
+    let keyword = ""
+    const filterButton = filterButtonHelper(req.query)
 
     let find = {
         deleted: false
@@ -40,13 +17,15 @@ module.exports.index = async (req, res) => {
     }
 
     if (req.query.keyword) {
-        find.title = { $regex: req.query.keyword, $options: 'i' }
+        find.title = filterKeywordHelper(req.query)
+        keyword = req.query.keyword
     }
 
     const products = await Product.find(find)
     res.render("admin/pages/products/index", {
         pageTitle: "Products",
         products: products,
-        filterButton: filterButton
+        filterButton: filterButton,
+        keyword: keyword
     })
 }
