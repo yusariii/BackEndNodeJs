@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model")
 const filterButtonHelper = require("../../helpers/filterButton")
 const filterKeywordHelper = require("../../helpers/filterKeyword")
+const paginationHelper = require("../../helpers/pagination")
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -21,7 +22,9 @@ module.exports.index = async (req, res) => {
         keyword = req.query.keyword
     }
 
-    const products = await Product.find(find)
+    const objectPagination = paginationHelper(req.query)
+    
+    const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip)
     res.render("admin/pages/products/index", {
         pageTitle: "Products",
         products: products,
