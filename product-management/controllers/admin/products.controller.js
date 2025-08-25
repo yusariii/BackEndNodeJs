@@ -24,11 +24,15 @@ module.exports.index = async (req, res) => {
 
     const objectPagination = paginationHelper(req.query)
     
+    const countProducts = await Product.countDocuments(find)
+    objectPagination.totalPages = Math.ceil(countProducts / objectPagination.limitItems)
+
     const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip)
     res.render("admin/pages/products/index", {
         pageTitle: "Products",
         products: products,
         filterButton: filterButton,
-        keyword: keyword
+        keyword: keyword,
+        pagination: objectPagination
     })
 }

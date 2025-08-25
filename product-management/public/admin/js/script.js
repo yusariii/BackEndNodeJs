@@ -13,6 +13,8 @@ if (buttonsActive.length > 0) {
                 url.searchParams.delete("status")
             }
 
+            url.searchParams.delete("page")
+
             window.location.href = url.href
         })
     })
@@ -33,8 +35,30 @@ if (formSearch) {
         } else {
             url.searchParams.delete("keyword")
         }
+
+        url.searchParams.delete("page")
         
         window.location.href = url.href
     })
 }
 // End Form Search
+
+// Pagination
+const buttonsPage = document.querySelectorAll("[pages]")
+if (buttonsPage.length > 0){
+    let url = new URL(window.location.href)
+
+    buttonsPage.forEach(button => {
+        button.addEventListener("click", () => {
+            const page = button.getAttribute("pages")
+
+            if (page) {
+                url.searchParams.set("page", page)
+            } else {
+                url.searchParams.delete("page")
+            }
+
+            window.location.href = url.href
+        })
+    })
+}
