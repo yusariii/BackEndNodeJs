@@ -1,5 +1,7 @@
 //Import express and dotenv
 const express = require('express')
+const methodOverride = require('method-override')
+const bodyParser = require('body-parser')
 require("dotenv").config()
 
 //Import and connect database
@@ -12,6 +14,10 @@ const routeAdmin = require("./routes/admin/index.route")
 
 //app and port
 const app = express()
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(methodOverride('_method'));
 const port = process.env.PORT
 
 //App locals variables
