@@ -67,11 +67,18 @@ if (formChangeMulti) {
             let ids = []
             const inputIds = formChangeMulti.querySelector("input[name='ids']")
 
-            checkboxChecked.forEach(item => ids.push(item.value))
+            checkboxChecked.forEach(item => {
+                const id = item.value
+
+                if(typeAction === "change-position") {
+                    const position = item.closest("tr").querySelector("input[name='position']").value
+                    ids.push(`${id}:${position}`)
+                } else {
+                    ids.push(id)
+                }
+            })
 
             inputIds.value = ids.join(",")
-
-
 
             formChangeMulti.submit()
         } else {

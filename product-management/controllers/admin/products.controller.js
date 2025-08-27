@@ -27,7 +27,10 @@ module.exports.index = async (req, res) => {
     const countProducts = await Product.countDocuments(find)
     objectPagination.totalPages = Math.ceil(countProducts / objectPagination.limitItems)
 
-    const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip)
+    const products = await Product.find(find)
+        .sort({ position: "asc" })
+        .limit(objectPagination.limitItems)
+        .skip(objectPagination.skip)
     res.render("admin/pages/products/index", {
         pageTitle: "Products",
         products: products,
@@ -62,6 +65,12 @@ module.exports.changeMulti = async (req, res) => {
             break;
         case "delete-all":
             await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() })
+            break;
+        case "change-position":
+            for (const item of ids) {
+                let [id, position] = item.split(":")
+                await Product.updateOne({ _id: id }, { position: parseInt(position), updateAt: new Date() })
+            }
             break;
         default:
             break;
