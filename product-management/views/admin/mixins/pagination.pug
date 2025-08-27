@@ -1,29 +1,31 @@
 mixin pagination(pagination)
     nav
         ul(class="pagination")
-            li(class="page-item")
-                button(
-                    class=`page-link ${pagination.currentPage == 1 ? "disabled" : ""}`
-                    pages = 1
-                    ) &lt;&lt;
-            li(class="page-item")
-                button(
-                    class=`page-link ${pagination.currentPage == 1 ? "disabled" : ""}`
-                    pages = pagination.currentPage - 1
-                    ) &lt;
+            if pagination.currentPage > 1
+                li(class="page-item")
+                    button(
+                        class=`page-link`
+                        pages = 1
+                        ) &lt;&lt;
+                li(class="page-item")
+                    button(
+                        class=`page-link`
+                        pages = pagination.currentPage - 1
+                        ) &lt;
             - for (var i = 1; i <= pagination.totalPages; i++)
                 li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
                     button(
                         class="page-link"
                         pages = i
                         ) #{i}
-            li(class="page-item")
-                button(
-                    class=`page-link ${pagination.currentPage == pagination.totalPages ? "disabled" : ""}`
-                    pages = pagination.currentPage + 1
-                    ) &gt;
-            li(class="page-item")
-                button(
-                    class=`page-link ${pagination.currentPage == pagination.totalPages ? "disabled" : ""}`
-                    pages = pagination.totalPages
-                    ) &gt;&gt;
+            if pagination.currentPage < pagination.totalPages
+                li(class="page-item")
+                    button(
+                        class=`page-link`
+                        pages = pagination.currentPage + 1
+                        ) &gt;
+                li(class="page-item")
+                    button(
+                        class=`page-link`
+                        pages = pagination.totalPages
+                        ) &gt;&gt;
