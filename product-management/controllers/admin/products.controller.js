@@ -47,6 +47,8 @@ module.exports.changeStatus = async (req, res) => {
 
     await Product.updateOne({ _id: id }, { status: status })
 
+    req.flash('success', 'Cập nhật trạng thái thành công!')
+
     const backURL = req.get('Referer')
     res.redirect(backURL)
 }
@@ -59,17 +61,21 @@ module.exports.changeMulti = async (req, res) => {
     switch (type) {
         case "active":
             await Product.updateMany({ _id: { $in: ids } }, { status: "active" })
+            req.flash('success', `Cập nhật trạng thái ${ids.length} sản phẩm thành công!`)
             break;
         case "inactive":
             await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" })
+            req.flash('success', `Cập nhật trạng thái ${ids.length} sản phẩm thành công!`)
             break;
         case "delete-all":
             await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() })
+            req.flash('success', `Xóa ${ids.length} sản phẩm thành công!`)
             break;
         case "change-position":
             for (const item of ids) {
                 let [id, position] = item.split(":")
                 await Product.updateOne({ _id: id }, { position: parseInt(position), updateAt: new Date() })
+                req.flash('success', `Cập nhật vị trí ${ids.length} sản phẩm thành công!`)
             }
             break;
         default:
@@ -89,6 +95,7 @@ module.exports.deleteProduct = async (req, res) => {
         deletedAt: new Date()
     })
     // await Product.deleteOne({ _id: id})
+    req.flash('success', 'Xóa sản phẩm thành công!')
 
     const backURL = req.get('Referer')
     res.redirect(backURL)

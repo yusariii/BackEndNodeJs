@@ -3,9 +3,12 @@ include ../../mixins/filter-button.pug
 include ../../mixins/form-search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
+include ../../mixins/alert.pug
 
 block main 
     h1 Products
+
+    +alert(5000)
 
     .card.mb-3 
         .card-header Bộ lọc và tìm kiếm 

@@ -1,0 +1,7 @@
+mixin alert(time)
+    - if (messages.success)
+        div(
+            class="alert alert-success"
+            show-alert
+            data-time=time || "3000" 
+        ) #{messages.success} <span close-alert>x</span>
