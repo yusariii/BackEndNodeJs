@@ -23,7 +23,13 @@ block main
     .card.mb-3 
         .card-header Sản phẩm
         .card-body 
-            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+            .row(class="mb-3")
+                .col-8
+                    +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                .col-4.text-end
+                    a(href=`${prefixAdmin}/products/create`
+                        class="btn btn-success"
+                    ) + Thêm sản phẩm
 
             table(
                 class="table table-hover table-sm"

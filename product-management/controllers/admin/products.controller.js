@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model")
+const systemConfig = require("../../config/system")
 const filterButtonHelper = require("../../helpers/filterButton")
 const filterKeywordHelper = require("../../helpers/filterKeyword")
 const paginationHelper = require("../../helpers/pagination")
@@ -99,4 +100,29 @@ module.exports.deleteProduct = async (req, res) => {
 
     const backURL = req.get('Referer')
     res.redirect(backURL)
+}
+
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+    res.render("admin/pages/products/create", {
+        pageTitle: "Create Product"
+    })
+}
+
+// [POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+    req.body.price = parseFloat(req.body.price)
+    req.body.discountPercent = parseFloat(req.body.discountPercent)
+    req.body.stock = parseInt(req.body.stock)
+    if (!req.body.position) {
+        const countProducts = await Product.countDocuments()
+        req.body.position = countProducts + 1
+    } else {
+        req.body.position = parseInt(req.body.position)
+    }
+
+    const product = new Product(req.body)
+    await product.save()
+
+    res.redirect(`${systemConfig.prefixAdmin}/products`)
 }
