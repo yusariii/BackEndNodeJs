@@ -7,6 +7,7 @@ block main
         action=`${prefixAdmin}/products/create`
         method="POST"
         id="form-create-product"
+        enctype="multipart/form-data"
     )
         div(class="form-group")
             label(for="title") Tiêu đề
@@ -58,11 +59,27 @@ block main
         div(class="form-group")
             label(for="thumbnail") Hình ảnh
             input(
-                type="text" 
-                class="form-control mb-2"
+                type="file" 
+                class="form-control-file mb-2"
                 name="thumbnail" 
                 id="thumbnail"
+                accept="image/*"
+                style="display: block;"
+                upload-image-input
             )
+            img(
+                id="img-preview" 
+                src="#" 
+                alt="Image Preview" 
+                style="max-width: 200px; display: none;"
+                upload-image-preview
+            )
+            //- input(
+            //-     type="text" 
+            //-     class="form-control mb-2"
+            //-     name="thumbnail" 
+            //-     id="thumbnail"
+            //- )
         div(class="form-group")
             label(for="position") Vị trí
             input(
@@ -100,9 +117,15 @@ block main
             ) Dừng hoạt động
         div(class="form-group")
             button(
+                type="reset"
+                class="btn btn-danger me-2"
+                reset-button
+            ) Nhập lại
+            button(
                 type="submit"
                 class="btn btn-primary"
             ) Thêm sản phẩm
+            
             
                 
 

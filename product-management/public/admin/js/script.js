@@ -89,5 +89,27 @@ if (showAlert) {
 }
 // End Show Alert
 
+// Upload Image
+const imgInput = document.querySelector("[upload-image-input]")
+const imgPreview = document.querySelector("[upload-image-preview]")
+imgInput.addEventListener("change", (e) => {
+    const [file] = imgInput.files
+    if (file) {
+        imgPreview.src = URL.createObjectURL(file)
+        imgPreview.style.display = "block"
+    }
+})
+// End Upload Image
 
-
+// Reset Form
+const resetButton = document.querySelector("[reset-button]")
+const formCreate = document.querySelector("#form-create-product")
+resetButton.addEventListener("click", () => {
+    const ifConfirm = confirm("Bạn có chắc chắn muốn nhập lại không?")
+    if (ifConfirm) {
+        formCreate.reset()
+        imgPreview.src = "#"
+        imgPreview.style.display = "none"
+    }
+})
+// End Reset Form
