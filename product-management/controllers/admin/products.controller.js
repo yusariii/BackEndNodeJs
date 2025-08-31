@@ -111,8 +111,6 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/create
 module.exports.createProduct = async (req, res) => {
-    
-
     req.body.price = parseFloat(req.body.price)
     req.body.discountPercent = parseFloat(req.body.discountPercent)
     req.body.stock = parseInt(req.body.stock)
@@ -131,4 +129,43 @@ module.exports.createProduct = async (req, res) => {
     await product.save()
 
     res.redirect(`${systemConfig.prefixAdmin}/products`)
+}
+
+// [GET] /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+    try {
+        const id = req.params.id
+        const find = {
+            _id: id,
+            deleted: false
+        }
+        const product = await Product.findOne(find)
+        res.render("admin/pages/products/edit", {
+            pageTitle: "Edit Product",
+            product: product
+        })
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/products`)
+    }
+}
+
+// [PATCH] /admin/products/edit/:id
+module.exports.editProduct = async (req, res) => {
+    req.body.price = parseFloat(req.body.price)
+    req.body.discountPercent = parseFloat(req.body.discountPercent)
+    req.body.stock = parseInt(req.body.stock)
+    req.body.position = parseInt(req.body.position)
+
+    if (req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`
+    }
+    const id = req.params.id
+    try {
+        await Product.updateOne({ _id: id }, req.body)
+        req.flash('success', 'Cập nhật sản phẩm thành công!')
+        const backURL = req.get('Referer')
+        res.redirect(backURL)
+    } catch (error) {
+
+    }
 }

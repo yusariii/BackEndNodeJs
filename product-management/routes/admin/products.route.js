@@ -19,4 +19,9 @@ router.get("/create", controller.create)
 
 router.post("/create", upload.single("thumbnail"), validate.createProduct, controller.createProduct)
 
+router.get("/edit/:id", controller.edit)
+
+router.patch("/edit/:id", upload.single("thumbnail"), validate.createProduct, controller.editProduct)
+
+
 module.exports = router

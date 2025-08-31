@@ -3,15 +3,16 @@ include ../../mixins/alert.pug
 include ../../mixins/back-button.pug
 block main 
     +alert-error(5000)
+    +alert-success(5000)
 
     +back-button()
 
-    h1(class="mb-3") Thêm sản phẩm mới
+    h1(class="mb-3") Chỉnh sửa sản phẩm
 
     form(
-        action=`${prefixAdmin}/products/create`
+        action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
         method="POST"
-        id="form-create-product"
+        id="form-edit-product"
         enctype="multipart/form-data"
     )
         div(class="form-group")
@@ -21,6 +22,7 @@ block main
                 class="form-control mb-2"
                 name="title" 
                 id="title"
+                value=product.title
                 required
             )
         div(class="form-group")
@@ -30,7 +32,7 @@ block main
                 name="description" 
                 id="desc"
                 rows="4"
-            )
+            ) #{product.description}
         div(class="form-group")
             label(for="price") Giá
             input(
@@ -39,6 +41,7 @@ block main
                 name="price" 
                 id="price"
                 min="0"
+                value=product.price
                 required
             )
         div(class="form-group")
@@ -49,6 +52,7 @@ block main
                 name="discountPercentage" 
                 id="discount"
                 min="0"
+                value=product.discountPercentage
                 required
             )
         div(class="form-group")
@@ -59,6 +63,7 @@ block main
                 name="stock" 
                 id="stock"
                 min="0"
+                value=product.stock
                 required
             )
         div(class="form-group")
@@ -74,7 +79,7 @@ block main
             )
             img(
                 id="img-preview" 
-                src="#" 
+                src=product.thumbnail ? product.thumbnail : "#"
                 alt="Image Preview" 
                 class="img-preview"
                 upload-image-preview
@@ -92,7 +97,8 @@ block main
                 class="form-control mb-2"
                 name="position" 
                 id="position"
-                placeholder= "Tự động tăng"
+                value=product.position
+                required
                 min="1"
             )
         div(class="form-group form-check form-check-inline")
@@ -102,7 +108,7 @@ block main
                 id="statusActive"
                 name="status"
                 value="active"
-                checked
+                checked=product.status === "active" 
             )
             label(
                 class="form-check-label"
@@ -115,6 +121,7 @@ block main
                 id="statusInactive"
                 name="status"
                 value="inactive"
+                checked=product.status === "inactive"
             )
             label(
                 class="form-check-label"
@@ -125,11 +132,11 @@ block main
                 type="reset"
                 class="btn btn-danger me-2"
                 reset-button
-            ) Nhập lại
+            ) Đặt lại
             button(
                 type="submit"
                 class="btn btn-primary"
-            ) Thêm sản phẩm
+            ) Cập nhật
             
             
                 
