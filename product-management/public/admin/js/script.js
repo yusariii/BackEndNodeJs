@@ -92,11 +92,10 @@ if (showAlert) {
 // Upload Image
 const imgInput = document.querySelector("[upload-image-input]")
 const imgPreview = document.querySelector("[upload-image-preview]")
-imgInput.addEventListener("change", (e) => {
-    const [file] = imgInput.files
+imgInput.addEventListener("change", () => {
+    const [file] = imgInput.files // e.target.files[0]
     if (file) {
         imgPreview.src = URL.createObjectURL(file)
-        imgPreview.style.display = "block"
     }
 })
 // End Upload Image

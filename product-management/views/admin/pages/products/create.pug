@@ -1,6 +1,9 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
 block main 
+    +alert-error(5000)
+
     h1(class="mb-3") Thêm sản phẩm mới
 
     form(
@@ -71,7 +74,7 @@ block main
                 id="img-preview" 
                 src="#" 
                 alt="Image Preview" 
-                style="max-width: 200px; display: none;"
+                class="img-preview"
                 upload-image-preview
             )
             //- input(
