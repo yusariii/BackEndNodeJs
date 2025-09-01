@@ -1,0 +1,21 @@
+extends ../../layouts/default.pug
+include ../../mixins/back-button.pug
+block main 
+
+    .container.my-3
+        .row 
+            .col-12
+                +back-button()
+                .card
+                    .card-header 
+                        h1 #{product.title}
+                    .card-body
+                        if product.thumbnail
+                            img(src=product.thumbnail alt=product.title width="200px")
+                        p #{product.description}
+                        p Giá gốc: <b>#{product.price}$</b>
+                        p % Giảm giá: <b>#{product.discountPercentage}%</b>
+                        p Giá mới: <b>#{product.priceNew}$</b>
+                        p Số lượng: <b>#{product.stock}</b>
+                        p Vị trí: <b>#{product.position}</b>
+                        p Mô tả: #{product.description}

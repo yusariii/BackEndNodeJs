@@ -9,7 +9,7 @@ module.exports.index = async (req, res) => {
     }).sort({ position: "asc" })
 
     const newProducts = products.map(item => {
-        item.priceNew = (item.price*(100-item.discountPercentage)/100).toFixed(0)
+        item.priceNew = (item.price * (100 - item.discountPercentage) / 100).toFixed(0)
         return item
     })
 
@@ -17,4 +17,26 @@ module.exports.index = async (req, res) => {
         pageTitle: "Products",
         products: newProducts
     })
+}
+
+// [GET] /products/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const find = {
+            deleted: false,
+            slug: req.params.slug,
+            status: "active"
+        }
+        const product = await Product.findOne(find)
+
+        product.priceNew = (product.price * (100 - product.discountPercentage) / 100).toFixed(0)
+
+        res.render("client/pages/products/detail", {
+            pageTitle: product.title,
+            product
+        })
+    } catch (error) {
+        return res.redirect("/products")
+    }
+
 }

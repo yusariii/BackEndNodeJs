@@ -1,0 +1,24 @@
+extends ../../layouts/default.pug
+include ../../mixins/back-button.pug
+block main 
+
+    +back-button()
+
+    .card
+        .card-header 
+            div(class="d-flex justify-content-between align-items-center")
+                h1 #{product.title}
+                a(href=`${prefixAdmin}/products/edit/${product.id}` class="btn btn-warning btn-sm") Sửa
+        .card-body
+            if product.thumbnail
+                img(src=product.thumbnail alt=product.title width="200px")
+            p #{product.description}
+            p Giá: <b>#{product.price}$</b>
+            p % Giảm giá: <b>#{product.discountPercentage}%</b>
+            p Số lượng: <b>#{product.stock}</b>
+            p Vị trí: <b>#{product.position}</b>
+            p Trạng thái: 
+                if product.status === 'active'
+                    span(class="badge bg-success") Hoạt động
+                else if product.status === 'inactive'
+                    span(class="badge bg-danger") Dừng hoạt động
