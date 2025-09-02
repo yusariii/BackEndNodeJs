@@ -31,14 +31,14 @@ const systemConfig = require("./config/system")
 app.locals.prefixAdmin = systemConfig.prefixAdmin
 
 //Set views and view engine
-app.set("views", "./views")
+app.set("views", `${__dirname}/views`)
 app.set("view engine", "pug")
 
 
 
 
 //Static folder
-app.use(express.static("public"))
+app.use(express.static(`${__dirname}/public`))
 
 //Run router
 route(app)
