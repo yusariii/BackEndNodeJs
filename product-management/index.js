@@ -44,6 +44,6 @@ app.use(express.static(`${__dirname}/public`))
 route(app)
 routeAdmin(app)
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`)
+// })
