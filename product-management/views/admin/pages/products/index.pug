@@ -4,11 +4,13 @@ include ../../mixins/form-search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
-
+include ../../mixins/sort.pug
 block main 
     h1 Products
 
     +alert-success(5000)
+
+    
 
     .card.mb-3 
         .card-header Bộ lọc và tìm kiếm 
@@ -18,7 +20,9 @@ block main
                     +filter-button(filterButton) 
                 .col-6 
                     +form-search(keyword)
-
+            .row 
+                .col-4 
+                    +sort()
 
     .card.mb-3 
         .card-header Sản phẩm
@@ -30,6 +34,7 @@ block main
                     a(href=`${prefixAdmin}/products/create`
                         class="btn btn-success"
                     ) + Thêm sản phẩm
+    
 
             table(
                 class="table table-hover table-sm"

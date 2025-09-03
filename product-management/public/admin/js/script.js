@@ -92,23 +92,69 @@ if (showAlert) {
 // Upload Image
 const imgInput = document.querySelector("[upload-image-input]")
 const imgPreview = document.querySelector("[upload-image-preview]")
-imgInput.addEventListener("change", () => {
-    const [file] = imgInput.files // e.target.files[0]
-    if (file) {
-        imgPreview.src = URL.createObjectURL(file)
-    }
-})
+if (imgInput && imgPreview) {
+    imgInput.addEventListener("change", () => {
+        const [file] = imgInput.files // e.target.files[0]
+        if (file) {
+            imgPreview.src = URL.createObjectURL(file)
+        }
+    })
+}
 // End Upload Image
 
 // Reset Form
 const resetButton = document.querySelector("[reset-button]")
 const formCreate = document.querySelector("#form-create-product")
-resetButton.addEventListener("click", () => {
-    const ifConfirm = confirm("Bạn có chắc chắn muốn nhập lại không?")
-    if (ifConfirm) {
-        formCreate.reset()
-        imgPreview.src = "#"
-        imgPreview.style.display = "none"
-    }
-})
+if (resetButton) {
+    resetButton.addEventListener("click", () => {
+        const ifConfirm = confirm("Bạn có chắc chắn muốn nhập lại không?")
+        if (ifConfirm) {
+            formCreate.reset()
+            imgPreview.src = "#"
+            imgPreview.style.display = "none"
+        }
+    })
+}
 // End Reset Form
+
+// Sort
+const sortDiv = document.querySelector("[sort]")
+if (sortDiv) {
+    const sortSelect = sortDiv.querySelector("[sort-select]")
+    let url = new URL(window.location.href)
+    if (sortSelect) {
+        sortSelect.value = url.searchParams.get("sort") || ""
+        sortSelect.addEventListener("change", (e) => {
+            const sort = e.target.value
+            const [sortBy, sortType] = sort.split("-")
+            if (sortBy && sortType) {
+                url.searchParams.set("sortBy", sortBy)
+                url.searchParams.set("sortType", sortType)
+            }
+            else {
+                url.searchParams.delete("sortBy")
+                url.searchParams.delete("sortType")
+            }
+            window.location.href = url.href
+        })
+
+    }
+
+    const sortClear = sortDiv.querySelector("[sort-clear]")
+    if (sortClear) {
+        sortClear.addEventListener("click", () => {
+            url.searchParams.delete("sortBy")
+            url.searchParams.delete("sortType")
+            window.location.href = url.href
+        })
+    }
+
+    const sortBy = url.searchParams.get("sortBy")
+    const sortType = url.searchParams.get("sortType")
+    if (sortBy && sortType){
+        const stringSort = `${sortBy}-${sortType}`
+        const optionSelect = sortSelect.querySelector(`option[value='${stringSort}']`)
+        optionSelect.selected = true
+    }
+}
+// End Sort 

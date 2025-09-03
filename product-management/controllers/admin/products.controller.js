@@ -7,13 +7,13 @@ const paginationHelper = require("../../helpers/pagination")
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     // console.log(req.query.status)
-    let keyword = ""
-    const filterButton = filterButtonHelper(req.query)
-
     let find = {
         deleted: false
     }
 
+    //Search
+    let keyword = ""
+    const filterButton = filterButtonHelper(req.query)
     if (req.query.status) {
         find.status = req.query.status
     }
@@ -22,14 +22,25 @@ module.exports.index = async (req, res) => {
         find.title = filterKeywordHelper(req.query)
         keyword = req.query.keyword
     }
+    // End Search
 
+    // Pagination
     const objectPagination = paginationHelper(req.query)
-
     const countProducts = await Product.countDocuments(find)
     objectPagination.totalPages = Math.ceil(countProducts / objectPagination.limitItems)
+    // End Pagination
 
+    // Sort
+    let sort = {}
+    if (req.query.sortBy && req.query.sortType) {
+        sort[req.query.sortBy] = req.query.sortType
+    } else {
+        sort.position = "desc"
+    }
+    // End Sort
+    
     const products = await Product.find(find)
-        .sort({ position: "asc" })
+        .sort(sort)
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip)
     res.render("admin/pages/products/index", {
