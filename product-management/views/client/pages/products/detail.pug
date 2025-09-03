@@ -17,5 +17,5 @@ block main
                         p % Giảm giá: <b>#{product.discountPercentage}%</b>
                         p Giá mới: <b>#{product.priceNew}$</b>
                         p Số lượng: <b>#{product.stock}</b>
-                        p Vị trí: <b>#{product.position}</b>
-                        p Mô tả: #{product.description}
+                        if product.description
+                            p Mô tả: #{product.description}

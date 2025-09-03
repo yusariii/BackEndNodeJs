@@ -11,7 +11,7 @@ module.exports.createProduct = (req, res, next) => {
         return res.redirect(`${systemConfig.prefixAdmin}/products/create`)
     }
 
-    if (req.body.discountPercent && (isNaN(req.body.discountPercent) || req.body.discountPercent < 0 || req.body.discountPercent > 100)) {
+    if (req.body.discountPercentage && (isNaN(req.body.discountPercentage) || req.body.discountPercentage < 0 || req.body.discountPercentage > 100)) {
         req.flash('error', 'Phần trăm giảm giá không hợp lệ!')
         return res.redirect(`${systemConfig.prefixAdmin}/products/create`)
     }
