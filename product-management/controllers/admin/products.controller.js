@@ -165,9 +165,6 @@ module.exports.editProduct = async (req, res) => {
     req.body.stock = parseInt(req.body.stock)
     req.body.position = parseInt(req.body.position)
 
-    if (req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`
-    }
     const id = req.params.id
     try {
         await Product.updateOne({ _id: id }, req.body)
@@ -175,7 +172,8 @@ module.exports.editProduct = async (req, res) => {
         const backURL = req.get('Referer')
         res.redirect(backURL)
     } catch (error) {
-
+        req.flash('error', 'Cập nhật sản phẩm thất bại! Vui lòng thử lại sau.')
+        res.redirect(`${systemConfig.prefixAdmin}/products`)
     }
 }
 

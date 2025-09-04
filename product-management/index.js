@@ -1,5 +1,6 @@
 //Import express and dotenv
 const express = require('express')
+const path = require('path')
 const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 const flash = require('express-flash')
@@ -25,6 +26,9 @@ app.use(cookieParser("asdaksdasdaa"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 const port = process.env.PORT
+
+//TinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')))
 
 //App locals variables
 const systemConfig = require("./config/system")
