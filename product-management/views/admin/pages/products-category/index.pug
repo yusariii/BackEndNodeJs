@@ -1,40 +1,20 @@
 extends ../../layouts/default.pug
-include ../../mixins/filter-button.pug
-include ../../mixins/form-search.pug
-include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
-include ../../mixins/alert.pug
-include ../../mixins/sort.pug
+include ../../mixins/pagination.pug
 block main 
-    h1 Products
-
-    +alert-success(5000)
-
-    
+    h1 Category
 
     .card.mb-3 
-        .card-header Bộ lọc và tìm kiếm 
-        .card-body  
-            .row 
-                .col-6
-                    +filter-button(filterButton) 
-                .col-6 
-                    +form-search(keyword)
-            .row 
-                .col-4 
-                    +sort()
-
-    .card.mb-3 
-        .card-header Sản phẩm
+        .card-header Danh mục sản phẩm
         .card-body 
             .row(class="mb-3")
                 .col-8
-                    +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                    +form-change-multi(`${prefixAdmin}/products-category/change-multi?_method=PATCH`)
                 .col-4.text-end
-                    a(href=`${prefixAdmin}/products/create`
+                    a(href=`${prefixAdmin}/products-category/create`
                         class="btn btn-outline-success"
-                    ) + Thêm sản phẩm
-    
+                    ) + Thêm mới
+            
 
             table(
                 class="table table-hover table-sm"
@@ -47,14 +27,13 @@ block main
                         th STT
                         th Hình ảnh
                         th Tiêu đề
-                        th Giá
                         th Vị trí
                         th Trạng thái
                         th Hành động
                     
                 tbody 
-                    if (products.length > 0)
-                        each item, index in products
+                    if (records.length > 0)
+                        each item, index in records
                             tr 
                                 td 
                                     input(type="checkbox" name="checkItem" value=item.id)
@@ -66,7 +45,6 @@ block main
                                         height="auto"
                                     )
                                 td #{item.title}
-                                td #{item.price}$
                                 td
                                     input(
                                         type="number"
@@ -86,10 +64,10 @@ block main
                                         | #{item.status === "active" ? "Hoạt động" : "Dừng hoạt động"}
                                 td 
                                     a(
-                                        href=`${prefixAdmin}/products/detail/${item.id}` 
+
                                         class="btn btn-info btn-sm") Chi tiết
                                     a(
-                                        href=`${prefixAdmin}/products/edit/${item.id}` 
+
                                         class="btn btn-warning btn-sm ms-1") Sửa
                                     button(
                                         class="btn btn-danger btn-sm ms-1"
@@ -99,23 +77,8 @@ block main
                     else  
                         tr
                             td(colspan="8" class="text-center") 
-                                p(class="mt-3 mb-3") Không tồn tại sản phẩm nào.
+                                p(class="mt-3 mb-3") Không tồn tại danh mục nào.
     
      
     +pagination(pagination)
 
-    form(
-        action=""
-        method="POST"
-        id="form-change-status"
-        data-path=`${prefixAdmin}/products/change-status`
-    )
-
-    form(
-        action=""
-        method="POST"
-        id="form-delete-product"
-        data-path=`${prefixAdmin}/products/delete`
-    )
-
-    script(src="/admin/js/products.script.js")
