@@ -1,20 +1,18 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/back-button.pug
-
 block main 
-
     +alert-error(5000)
+    +alert-success(5000)
 
     +back-button()
 
-
-    h1(class="mb-3") Tạo danh mục mới
+    h1(class="mb-3") Chỉnh sửa danh mục
 
     form(
-        action=`${prefixAdmin}/products-category/create`
+        action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
         method="POST"
-        id="form-create-record"
+        id="form-edit-record"
         enctype="multipart/form-data"
     )
         div(class="form-group")
@@ -24,6 +22,7 @@ block main
                 class="form-control mb-2"
                 name="title" 
                 id="title"
+                value=record.title
                 required
             )
         div(class="form-group")
@@ -41,7 +40,7 @@ block main
                 name="description" 
                 id="desc"
                 rows="4"
-            )
+            ) !{record.description}
         div(class="form-group")
             label(for="thumbnail") Hình ảnh
             input(
@@ -55,7 +54,7 @@ block main
             )
             img(
                 id="img-preview" 
-                src="#" 
+                src=record.thumbnail ? record.thumbnail : "#"
                 alt="Image Preview" 
                 class="img-preview"
                 upload-image-preview
@@ -73,7 +72,8 @@ block main
                 class="form-control mb-2"
                 name="position" 
                 id="position"
-                placeholder= "Tự động tăng"
+                value=record.position
+                required
                 min="1"
             )
         div(class="form-group form-check form-check-inline")
@@ -83,7 +83,7 @@ block main
                 id="statusActive"
                 name="status"
                 value="active"
-                checked
+                checked=record.status === "active" 
             )
             label(
                 class="form-check-label"
@@ -96,6 +96,7 @@ block main
                 id="statusInactive"
                 name="status"
                 value="inactive"
+                checked=record.status === "inactive"
             )
             label(
                 class="form-check-label"
@@ -106,11 +107,11 @@ block main
                 type="reset"
                 class="btn btn-danger me-2"
                 reset-button
-            ) Nhập lại
+            ) Đặt lại
             button(
                 type="submit"
                 class="btn btn-primary"
-            ) Thêm danh mục
+            ) Cập nhật
             
             
                 

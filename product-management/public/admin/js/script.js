@@ -102,20 +102,7 @@ if (imgInput && imgPreview) {
 }
 // End Upload Image
 
-// Reset Form
-const resetButton = document.querySelector("[reset-button]")
-const formCreate = document.querySelector("#form-create-product")
-if (resetButton) {
-    resetButton.addEventListener("click", () => {
-        const ifConfirm = confirm("Bạn có chắc chắn muốn nhập lại không?")
-        if (ifConfirm) {
-            formCreate.reset()
-            imgPreview.src = "#"
-            imgPreview.style.display = "none"
-        }
-    })
-}
-// End Reset Form
+
 
 // Sort
 const sortDiv = document.querySelector("[sort]")

@@ -91,16 +91,16 @@ if (formChangeMulti) {
 // Delete Button
 const buttonsDelete = document.querySelectorAll("[button-delete]")
 if (buttonsDelete.length > 0) {
-    const formDeleteProduct = document.getElementById("form-delete-product")
-    const path = formDeleteProduct.getAttribute("data-path")
+    const formDeleteRecord = document.getElementById("form-delete-record")
+    const path = formDeleteRecord.getAttribute("data-path")
     buttonsDelete.forEach(button => {
         button.addEventListener("click", () => {
             const ifConfirm = confirm("Bạn có chắc chắn muốn xóa mục này không?")
             if (ifConfirm) {
                 const id = button.getAttribute("data-id")
                 const action = path + `/${id}?_method=DELETE`
-                formDeleteProduct.action = action
-                formDeleteProduct.submit()
+                formDeleteRecord.action = action
+                formDeleteRecord.submit()
             }
         })
     })
@@ -109,7 +109,7 @@ if (buttonsDelete.length > 0) {
 
 // Reset Form
 const resetButton = document.querySelector("[reset-button]")
-const formCreate = document.querySelector("#form-create-product")
+const formCreate = document.querySelector("#form-create-record")
 if (resetButton) {
     resetButton.addEventListener("click", () => {
         const ifConfirm = confirm("Bạn có chắc chắn muốn nhập lại không?")
