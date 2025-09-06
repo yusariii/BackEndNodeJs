@@ -3,7 +3,7 @@ const systemConfig = require("../../config/system")
 const filterButtonHelper = require("../../helpers/filterButton")
 const filterKeywordHelper = require("../../helpers/filterKeyword")
 const paginationHelper = require("../../helpers/pagination")
-
+const createTreeHelper = require("../../helpers/createTree")
 
 // [GET] /admin/products-category
 module.exports.index = async (req, res) => {
@@ -26,29 +26,31 @@ module.exports.index = async (req, res) => {
     // End Search
 
     // Pagination
-    const objectPagination = paginationHelper(req.query)
-    const countRecords = await ProductsCategory.countDocuments(find)
-    objectPagination.totalPages = Math.ceil(countRecords / objectPagination.limitItems)
+    // const objectPagination = paginationHelper(req.query)
+    // const countRecords = await ProductsCategory.countDocuments(find)
+    // objectPagination.totalPages = Math.ceil(countRecords / objectPagination.limitItems)
     // End pagination
 
     // Sort
-    let sort = {}
-    if (req.query.sortBy && req.query.sortType) {
-        sort[req.query.sortBy] = req.query.sortType
-    } else {
-        sort.position = "desc"
-    }
+    // let sort = {}
+    // if (req.query.sortBy && req.query.sortType) {
+    //     sort[req.query.sortBy] = req.query.sortType
+    // } else {
+    //     sort.position = "desc"
+    // }
     // End Sort
 
     const records = await ProductsCategory.find(find)  
-        .sort(sort) 
-        .limit(objectPagination.limitItems)
-        .skip(objectPagination.skip)
+        // .sort(sort) 
+        // .limit(objectPagination.limitItems)
+        // .skip(objectPagination.skip)
+
+    const newRecords = createTreeHelper.createTree(records)
 
     res.render("admin/pages/products-category/index", {
         pageTitle: "Category",
-        records: records,
-        pagination: objectPagination,
+        records: newRecords,
+        // pagination: objectPagination,
         filterButton: filterButton,
         keyword: keyword
     })
@@ -67,6 +69,7 @@ module.exports.changeStatus = async (req, res) => {
     const backURL = req.get('Referer')
     res.redirect(backURL)
 }
+
 
 // [PATCH] /admin/products-category/change-multi
 module.exports.changeMulti = async (req, res) => {
@@ -101,6 +104,7 @@ module.exports.changeMulti = async (req, res) => {
     res.redirect(backURL)
 }
 
+
 // [DELETE] /admin/products-category/delete/:id
 module.exports.deleteProductsCategory = async (req, res) => {
     const id = req.params.id
@@ -116,12 +120,25 @@ module.exports.deleteProductsCategory = async (req, res) => {
     res.redirect(backURL)
 }
 
+
 // [GET] /admin/products-category/create
-module.exports.create = (req, res) => {
+module.exports.create = async (req, res) => {
+    let find = {
+        deleted: false
+    }
+
+    const records = await ProductsCategory.find(find)
+
+    const newRecords = createTreeHelper.createTree(records)
+
+    console.log(newRecords)
+
     res.render("admin/pages/products-category/create", {
-        pageTitle: "Category create"
+        pageTitle: "Category create",
+        records: newRecords
     })
 }
+
 
 // [POST] /admin/products-category/create
 module.exports.createProductsCategory = async (req, res) => {
@@ -138,23 +155,34 @@ module.exports.createProductsCategory = async (req, res) => {
     res.redirect(`${systemConfig.prefixAdmin}/products-category`)
 }
 
+
 // [GET] /admin/products-category/edit/:id
 module.exports.edit = async (req, res) => {
     try {
         const id = req.params.id
-        const find = {
+        const findOne = {
             _id: id,
             deleted: false
         }
-        const productsCategory = await ProductsCategory.findOne(find)
+        const find = {
+            _id: { $ne: id },
+            deleted: false
+        }
+        const [record, records] = await Promise.all([
+            ProductsCategory.findOne(findOne),
+            ProductsCategory.find(find)
+        ])
+        const newRecords = createTreeHelper.createTree(records)
         res.render("admin/pages/products-category/edit", {
             pageTitle: "Edit Product's Category",
-            record: productsCategory
+            record: record,
+            records: newRecords
         })
     } catch (error) {
         res.redirect(`${systemConfig.prefixAdmin}/products-category`)
     }
 }
+
 
 // [PATCH] /admin/products-category/edit/:id
 module.exports.editProductsCategory = async (req, res) => {
@@ -171,6 +199,7 @@ module.exports.editProductsCategory = async (req, res) => {
         res.redirect(`${systemConfig.prefixAdmin}/products-category`)
     }
 }
+
 
 // [GET] /admin/products-category/detail/:id
 module.exports.detail = async (req, res) => {
