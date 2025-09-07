@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/back-button.pug
+include ../../mixins/select-tree.pug
 block main 
     +alert-error(5000)
     +alert-success(5000)
@@ -34,11 +35,7 @@ block main
             )
                 option(value="" selected disabled) -- Chọn danh mục cha --
                     if records 
-                        each item in records 
-                            if record.id == item.id
-                                option(value=item.id selected) #{item.title}
-                            else 
-                                option(value=item.id) #{item.title}
+                        +select-tree(records, 1, record.parent_id)
         div(class="form-group")
             label(for="desc") Mô tả
             textarea(
