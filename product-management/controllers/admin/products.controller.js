@@ -148,7 +148,6 @@ module.exports.createProduct = async (req, res) => {
     }
 
 
-    console.log(req.body)
     const product = new Product(req.body)
     await product.save()
 

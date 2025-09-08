@@ -1,0 +1,14 @@
+extends ../../layouts/default.pug
+include ../../mixins/back-button.pug
+block main 
+
+    +back-button()
+
+    .card
+        .card-header 
+            div(class="d-flex justify-content-between align-items-center")
+                h1 #{record.title}
+                a(href=`${prefixAdmin}/roles/edit/${record.id}` class="btn btn-warning btn-sm") Sửa
+        .card-body
+            if record.description
+                p !{record.description}

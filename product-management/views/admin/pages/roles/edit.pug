@@ -1,0 +1,40 @@
+extends ../../layouts/default.pug
+include ../../mixins/back-button.pug
+block main 
+
+    +back-button()
+
+    h1(class="mb-3") Cập nhật nhóm quyền
+
+    form(
+        action=`${prefixAdmin}/roles/edit/${record.id}?_method=PATCH`
+        method="POST"
+    )
+        div(class="form-group")
+            label(for="title") Tiêu đề
+            input(
+                type="text" 
+                class="form-control mb-2"
+                name="title" 
+                id="title"
+                value=record.title
+                required
+            )
+        div(class="form-group")
+            label(for="desc") Mô tả
+            textarea(
+                class="form-control mb-2"
+                name="description" 
+                id="desc"
+                rows="4"
+            ) #{record.description}
+        div(class="form-group")
+            button(
+                type="reset"
+                class="btn btn-danger me-2"
+                reset-button
+            ) Nhập lại
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Cập nhật
