@@ -101,3 +101,42 @@ module.exports.detail = async (req, res) => {
         res.redirect(`${systemConfig.prefixAdmin}/roles`)
     }
 }
+
+
+// [GET] /admin/roles/permissions
+module.exports.permissions = async (req, res) => {
+    let find = {
+        deleted: false
+    }
+    const records = await Role.find(find)
+    const count = records.length
+    res.render("admin/pages/roles/permissions", {
+        pageTitle: "Permissions",
+        records: records,
+        count: count
+    })
+}
+
+
+// [PATCH] /admin/roles/permissions
+module.exports.editPermissions = async (req, res) => {
+    // console.log(req.body)
+    try {
+        const permissions = JSON.parse(req.body.permissions)
+
+
+        for (const item of permissions) {
+            await Role.updateOne(
+                { _id: item.id },
+                { permissions: item.permissionsArr }
+            )
+        }
+
+        req.flash('success', 'Cập nhật nhóm quyền thành công!')
+
+        res.redirect(`${systemConfig.prefixAdmin}/roles/permissions`)
+    } catch (error) {
+        
+    }
+
+}
