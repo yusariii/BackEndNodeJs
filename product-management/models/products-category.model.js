@@ -26,8 +26,5 @@ const productsCategorySchema = new mongoose.Schema({
 }, { timestamps: true })
 
 const ProductsCategory = mongoose.model("ProductsCategory", productsCategorySchema, "products-category")
-// Product -> Ten Model
-// productSchema -> Schema
-// products -> Bang products trong Database
 
 module.exports = ProductsCategory
