@@ -1,3 +1,4 @@
+const md5 = require("md5")
 const Account = require("../../models/account.model")
 const Role = require("../../models/role.model")
 const systemConfig = require("../../config/system")
@@ -17,8 +18,17 @@ module.exports.index = async (req, res) => {
     // End pagination
 
     const records = await Account.find(find)
+        .select("-password -token")
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip)
+
+    for(const record of records){
+        const role = await Role.findOne({
+            _id: record.role_id,
+            deleted: false
+        })
+        record.role = role
+    }
 
     res.render("admin/pages/accounts/index", {
         pageTitle: "accounts",
@@ -29,7 +39,7 @@ module.exports.index = async (req, res) => {
 
 // [GET] /admin/accounts/create
 module.exports.create = async (req, res) => {
-    const roles = await Role.find({deleted: false})
+    const roles = await Role.find({ deleted: false })
     res.render("admin/pages/accounts/create", {
         pageTitle: "Create account",
         roles: roles
@@ -38,9 +48,35 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/accounts/create
 module.exports.createAccount = async (req, res) => {
-    const account = new Account(req.body)
-    await account.save()
-    res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+    const emailExist = await Account.find({
+        email: req.body.email,
+        deleted: false
+    })
+    
+    if (emailExist.length > 0) {
+        req.flash("error", `Email ${req.body.email} đã tồn tại`)
+        const backURL = req.get('Referer')
+        res.redirect(backURL)
+    } else {
+        req.body.password = md5(req.body.password)
+        const account = new Account(req.body)
+        await account.save()
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+    }
+
+}
+
+// [PATCH] /admin/accounts/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+    const status = req.params.status
+    const id = req.params.id
+
+    await Account.updateOne({ _id: id }, { status: status })
+
+    req.flash('success', 'Cập nhật trạng thái thành công!')
+
+    const backURL = req.get('Referer')
+    res.redirect(backURL)
 }
 
 // [GET] /admin/accounts/edit/:id
@@ -53,7 +89,7 @@ module.exports.edit = async (req, res) => {
         }
         const [account, roles] = await Promise.all([
             await Account.findOne(find),
-            await Role.find({deleted: false})
+            await Role.find({ deleted: false })
         ])
         res.render("admin/pages/accounts/edit", {
             pageTitle: "Edit account",
@@ -69,6 +105,21 @@ module.exports.edit = async (req, res) => {
 module.exports.editAccount = async (req, res) => {
     try {
         const id = req.params.id
+        const emailExist = await Account.findOne({
+            _id: { $ne: id},
+            email: req.body.email,
+            deleted: false
+        })
+        if (emailExist.length > 0) {
+            req.flash('error', `Email ${req.body.email} đã tồn tại`)
+            const backURL = req.get('Referer')
+            return res.redirect(backURL)
+        } 
+        if (req.body.password){
+            req.body.password = md5(req.body.password)
+        } else {
+            delete req.body.password
+        }
         await Account.updateOne({ _id: id }, req.body)
         req.flash('success', 'Cập nhật nhóm quyền thành công!')
         const backURL = req.get('Referer')
@@ -99,8 +150,8 @@ module.exports.deleteAccount = async (req, res) => {
 module.exports.detail = async (req, res) => {
     try {
         const id = req.params.id
-        const account = await Account.findOne({ _id: id, deleted: false })
-        const role = await Role.findOne({_id: account.role_id, deleted: false})
+        const account = await Account.findOne({ _id: id, deleted: false }).select("-password -token")
+        const role = await Role.findOne({ _id: account.role_id, deleted: false })
         res.render("admin/pages/accounts/detail", {
             pageTitle: account.title,
             record: account,

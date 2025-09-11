@@ -1,7 +1,10 @@
 extends ../../layouts/default.pug
 include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
 
 block main 
+    +alert-success(5000)
+
     h1(class="mb-3") Tài khoản
 
     .card.mb-3
@@ -23,7 +26,9 @@ block main
                         th STT
                         th Ảnh đại diện
                         th Họ và tên
+                        th Phân quyền
                         th Email
+                        th Trạng thái
                         th Hành động
                     
                 tbody 
@@ -39,7 +44,17 @@ block main
                                         height="auto"
                                         )
                                 td #{item.fullName}
+                                td #{item.role.title}
                                 td #{item.email}
+                                td 
+                                    a(href="javascript:;" 
+                                        data-status=item.status
+                                        data-id=item.id
+                                        button-change-status
+                                        class=`badge ${item.status === "active" ? "bg-success" : "bg-danger"}`
+                                        style="text-decoration: none;"
+                                    )
+                                        | #{item.status === "active" ? "Hoạt động" : "Dừng hoạt động"}
                                 td 
                                     a(
                                         href=`${prefixAdmin}/accounts/detail/${item.id}` 
@@ -59,6 +74,12 @@ block main
     
     +pagination(pagination)
 
+    form(
+        action=""
+        method="POST"
+        id="form-change-status"
+        data-path=`${prefixAdmin}/accounts/change-status`
+    )
 
     form(
         action=""

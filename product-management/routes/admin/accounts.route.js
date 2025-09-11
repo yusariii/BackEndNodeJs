@@ -17,12 +17,12 @@ router.post("/create", upload.single("avatar"), uploadCloud.upload, validate.cre
 
 router.get("/edit/:id", controller.edit)
 
-router.patch("/edit/:id", upload.single("avatar"), uploadCloud.upload, validate.createAccount, controller.editAccount)
+router.patch("/edit/:id", upload.single("avatar"), uploadCloud.upload, validate.editAccount, controller.editAccount)
 
 router.delete("/delete/:id", controller.deleteAccount)
 
 router.get("/detail/:id", controller.detail)
 
-
+router.patch("/change-status/:status/:id", controller.changeStatus)
 
 module.exports = router

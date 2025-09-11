@@ -38,8 +38,6 @@ block main
                 class="form-control mb-2"
                 name="password" 
                 id="password"
-                value=record.password
-                required
             )
         div(class="form-group")
             label(for="phone") Số điện thoại
@@ -80,7 +78,32 @@ block main
                     if roles
                         each item in roles 
                             option(value=item.id selected=(record.role_id == item.id ? true : false)) #{item.title}
-       
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input mb-2"
+                id="statusActive"
+                name="status"
+                value="active"
+                checked=record.status === "active" 
+            )
+            label(
+                class="form-check-label"
+                for="statusActive"
+            ) Hoạt động
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input mb-2"
+                id="statusInactive"
+                name="status"
+                value="inactive"
+                checked=record.status === "inactive"
+            )
+            label(
+                class="form-check-label"
+                for="statusInactive"
+            ) Dừng hoạt động
         div(class="form-group")
             button(
                 type="reset"

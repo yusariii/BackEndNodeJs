@@ -1,8 +1,10 @@
 extends ../../layouts/default.pug
 include ../../mixins/back-button.pug
+include ../../mixins/alert.pug
 block main 
-
     +back-button()
+
+    +alert-error(5000)
 
     h1(class="mb-3") Thêm tài khoản mới
 
@@ -76,7 +78,32 @@ block main
                     if roles
                         each item in roles 
                             option(value=item.id) #{item.title}
-       
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input mb-2"
+                id="statusActive"
+                name="status"
+                value="active"
+                checked
+            )
+            label(
+                class="form-check-label"
+                for="statusActive"
+            ) Hoạt động
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input mb-2"
+                id="statusInactive"
+                name="status"
+                value="inactive"
+            )
+            label(
+                class="form-check-label"
+                for="statusInactive"
+            ) Dừng hoạt động
+            
         div(class="form-group")
             button(
                 type="reset"
