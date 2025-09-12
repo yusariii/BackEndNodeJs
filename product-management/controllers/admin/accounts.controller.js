@@ -31,7 +31,7 @@ module.exports.index = async (req, res) => {
     }
 
     res.render("admin/pages/accounts/index", {
-        pageTitle: "accounts",
+        pageTitle: "Accounts",
         records: records,
         pagination: objectPagination
     })

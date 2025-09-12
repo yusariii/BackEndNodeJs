@@ -3,9 +3,13 @@ const systemConfig = require("../../config/system")
 const md5 = require("md5")
 // [GET] /admin/auth/login
 module.exports.login = async (req, res) => {
-    res.render("admin/pages/auth/login", {
-        pageTitle: "Login"
-    })
+    if (req.cookies.token) {
+        res.redirect(`${systemConfig.prefixAdmin}/dashboard`)
+    } else {
+        res.render("admin/pages/auth/login", {
+            pageTitle: "Login"
+        })
+    }
 }
 
 
@@ -19,19 +23,19 @@ module.exports.loginPost = async (req, res) => {
         deleted: false
     })
 
-    if(!user){
+    if (!user) {
         req.flash("error", "Email không tồn tại")
         const backURL = req.get('Referer')
         return res.redirect(backURL)
     }
 
-    if(md5(password) != user.password){
+    if (md5(password) != user.password) {
         req.flash("error", "Sai mật khẩu")
         const backURL = req.get('Referer')
         return res.redirect(backURL)
     }
 
-    if(user.status == "inactive"){
+    if (user.status == "inactive") {
         req.flash("error", "Tài khoản đã bị khóa")
         const backURL = req.get('Referer')
         return res.redirect(backURL)

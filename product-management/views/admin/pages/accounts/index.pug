@@ -38,10 +38,9 @@ block main
                                 td #{pagination.limitItems * (pagination.currentPage - 1) + index + 1}
                                 td
                                     img(
+                                        class="avatar"
                                         src=item.avatar
                                         alt=item.fullName
-                                        width="100px"
-                                        height="auto"
                                         )
                                 td #{item.fullName}
                                 td #{item.role.title}
