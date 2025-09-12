@@ -1,0 +1,19 @@
+mixin no-perm()
+    .container.my-5 
+        .row.justify-content-center
+            .col-8  
+                h1 Bạn không có quyền truy cập 
+                a(
+                    href=`${prefixAdmin}/auth/logout`
+                    class="btn btn-danger btn-sm"
+                ) Đăng xuất
+
+mixin no-perm-home(pageTitle)
+    .container.my-5 
+        .row.justify-content-center
+            .col-8  
+                h1 Bạn không có quyền truy cập vào trang: #{pageTitle}
+                a(
+                    href=`${prefixAdmin}/dashboard`
+                    class="btn btn-danger btn-sm"
+                ) Trang chủ

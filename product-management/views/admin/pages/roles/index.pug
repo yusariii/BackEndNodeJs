@@ -1,60 +1,67 @@
 extends ../../layouts/default.pug
 include ../../mixins/pagination.pug
-
+include ../../mixins/no-perm.pug
 block main 
-    h1(class="mb-3") Nhóm quyền
+    if (role.permissions.includes("roles_view"))
 
-    .card.mb-3
-        .card-header Danh sách
-        .card-body 
-            .row 
-                .col-8 
-                .col-4.text-end
-                    a(
-                        href=`${prefixAdmin}/roles/create`
-                        class="btn btn-outline-success"
-                    ) + Thêm mới
+        h1(class="mb-3") #{pageTitle}
 
-            table(
-                class="table table-hover table-sm"
+        .card.mb-3
+            .card-header Danh sách
+            .card-body 
+                .row 
+                    .col-8 
+                    .col-4.text-end
+                        if (role.permissions.includes("roles_create"))
+                            a(
+                                href=`${prefixAdmin}/roles/create`
+                                class="btn btn-outline-success"
+                            ) + Thêm mới
+
+                table(
+                    class="table table-hover table-sm"
+                )
+                    thead 
+                        tr 
+                            th STT
+                            th Tiêu đề
+                            th Mô tả ngắn
+                            th Hành động
+                        
+                    tbody 
+                        if (records.length > 0)
+                            each item, index in records
+                                tr 
+                                    td #{pagination.limitItems * (pagination.currentPage - 1) + index + 1}
+                                    td #{item.title}
+                                    td #{item.description}
+                                    td 
+                                        a(
+                                            href=`${prefixAdmin}/roles/detail/${item.id}` 
+                                            class="btn btn-info btn-sm") Chi tiết
+                                        if (role.permissions.includes("roles_edit"))
+                                            a(
+                                                href=`${prefixAdmin}/roles/edit/${item.id}` 
+                                                class="btn btn-warning btn-sm ms-1") Sửa
+                                        if (role.permissions.includes("roles_delete"))
+                                            button(
+                                                class="btn btn-danger btn-sm ms-1"
+                                                data-id=item.id 
+                                                button-delete
+                                                ) Xóa
+                        else  
+                            tr
+                                td(colspan="8" class="text-center") 
+                                    p(class="mt-3 mb-3") Không tồn tại nhóm quyền nào.
+        
+        +pagination(pagination)
+
+        if (role.permissions.includes("roles_delete"))
+            form(
+                action=""
+                method="POST"
+                id="form-delete-record"
+                data-path=`${prefixAdmin}/roles/delete`
             )
-                thead 
-                    tr 
-                        th STT
-                        th Tiêu đề
-                        th Mô tả ngắn
-                        th Hành động
-                    
-                tbody 
-                    if (records.length > 0)
-                        each item, index in records
-                            tr 
-                                td #{pagination.limitItems * (pagination.currentPage - 1) + index + 1}
-                                td #{item.title}
-                                td #{item.description}
-                                td 
-                                    a(
-                                        href=`${prefixAdmin}/roles/detail/${item.id}` 
-                                        class="btn btn-info btn-sm") Chi tiết
-                                    a(
-                                        href=`${prefixAdmin}/roles/edit/${item.id}` 
-                                        class="btn btn-warning btn-sm ms-1") Sửa
-                                    button(
-                                        class="btn btn-danger btn-sm ms-1"
-                                        data-id=item.id 
-                                        button-delete
-                                        ) Xóa
-                    else  
-                        tr
-                            td(colspan="8" class="text-center") 
-                                p(class="mt-3 mb-3") Không tồn tại nhóm quyền nào.
-    
-    +pagination(pagination)
-
-
-    form(
-        action=""
-        method="POST"
-        id="form-delete-record"
-        data-path=`${prefixAdmin}/roles/delete`
-    )
+    else
+        +no-perm-home(pageTitle)

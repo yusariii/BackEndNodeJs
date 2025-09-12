@@ -1,39 +1,42 @@
 extends ../../layouts/default.pug
 include ../../mixins/back-button.pug
+include ../../mixins/no-perm.pug
 block main 
+    if (role.permissions.includes("roles_create"))
+        +back-button()
 
-    +back-button()
+        h1(class="mb-3") #{pageTitle}
 
-    h1(class="mb-3") Thêm nhóm quyền mới
-
-    form(
-        action=`${prefixAdmin}/roles/create`
-        method="POST"
-    )
-        div(class="form-group")
-            label(for="title") Tiêu đề
-            input(
-                type="text" 
-                class="form-control mb-2"
-                name="title" 
-                id="title"
-                required
-            )
-        div(class="form-group")
-            label(for="desc") Mô tả
-            textarea(
-                class="form-control mb-2"
-                name="description" 
-                id="desc"
-                rows="4"
-            )
-        div(class="form-group")
-            button(
-                type="reset"
-                class="btn btn-danger me-2"
-                reset-button
-            ) Nhập lại
-            button(
-                type="submit"
-                class="btn btn-primary"
-            ) Thêm mới
+        form(
+            action=`${prefixAdmin}/roles/create`
+            method="POST"
+        )
+            div(class="form-group")
+                label(for="title") Tiêu đề
+                input(
+                    type="text" 
+                    class="form-control mb-2"
+                    name="title" 
+                    id="title"
+                    required
+                )
+            div(class="form-group")
+                label(for="desc") Mô tả
+                textarea(
+                    class="form-control mb-2"
+                    name="description" 
+                    id="desc"
+                    rows="4"
+                )
+            div(class="form-group")
+                button(
+                    type="reset"
+                    class="btn btn-danger me-2"
+                    reset-button
+                ) Nhập lại
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Thêm mới
+    else 
+        +no-perm-home(pageTitle)

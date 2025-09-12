@@ -7,7 +7,7 @@ module.exports.login = async (req, res) => {
         res.redirect(`${systemConfig.prefixAdmin}/dashboard`)
     } else {
         res.render("admin/pages/auth/login", {
-            pageTitle: "Login"
+            pageTitle: "Đăng nhập"
         })
     }
 }
@@ -47,7 +47,7 @@ module.exports.loginPost = async (req, res) => {
 }
 
 // [GET] /admin/auth/logout
-module.exports.logout = async (req, res) => {
+module.exports.logout = (req, res) => {
     res.clearCookie("token")
     res.redirect(`${systemConfig.prefixAdmin}/auth/login`)
 }

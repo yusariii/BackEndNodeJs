@@ -20,7 +20,7 @@ module.exports.index = async (req, res) => {
         .skip(objectPagination.skip)
 
     res.render("admin/pages/roles/index", {
-        pageTitle: "Roles",
+        pageTitle: "Nhóm quyền",
         records: records,
         pagination: objectPagination
     })
@@ -29,7 +29,7 @@ module.exports.index = async (req, res) => {
 // [GET] /admin/roles/create
 module.exports.create = async (req, res) => {
     res.render("admin/pages/roles/create", {
-        pageTitle: "Create Role",
+        pageTitle: "Tạo nhóm quyền mới",
     })
 }
 
@@ -50,7 +50,7 @@ module.exports.edit = async (req, res) => {
         }
         const role = await Role.findOne(find)
         res.render("admin/pages/roles/edit", {
-            pageTitle: "Edit Role",
+            pageTitle: "Chỉnh sửa nhóm quyền",
             record: role,
         })
     } catch (error) {
@@ -111,7 +111,7 @@ module.exports.permissions = async (req, res) => {
     const records = await Role.find(find)
     const count = records.length
     res.render("admin/pages/roles/permissions", {
-        pageTitle: "Permissions",
+        pageTitle: "Phân quyền",
         records: records,
         count: count
     })

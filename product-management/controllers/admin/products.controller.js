@@ -46,7 +46,7 @@ module.exports.index = async (req, res) => {
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip)
     res.render("admin/pages/products/index", {
-        pageTitle: "Products",
+        pageTitle: "Danh sách sản phẩm",
         products: products,
         filterButton: filterButton,
         keyword: keyword,
@@ -128,7 +128,7 @@ module.exports.create = async (req, res) => {
     const newCategory = createTreeHelper.createTree(category)
 
     res.render("admin/pages/products/create", {
-        pageTitle: "Create Product",
+        pageTitle: "Tạo sản phẩm",
         category: newCategory
     })
 }
@@ -169,7 +169,7 @@ module.exports.edit = async (req, res) => {
         ])
         const newCategory = createTreeHelper.createTree(category)
         res.render("admin/pages/products/edit", {
-            pageTitle: "Edit Product",
+            pageTitle: "Cập nhật sản phẩm",
             product: product,
             category: newCategory
         })

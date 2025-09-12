@@ -8,7 +8,8 @@ block main
         .card-header 
             div(class="d-flex justify-content-between align-items-center")
                 h1 #{record.title}
-                a(href=`${prefixAdmin}/products-category/edit/${record.id}` class="btn btn-warning btn-sm") Sửa
+                if (role.permissions.includes("products-category_edit"))
+                    a(href=`${prefixAdmin}/products-category/edit/${record.id}` class="btn btn-warning btn-sm") Sửa
         .card-body
             if record.thumbnail
                 img(src=record.thumbnail alt=record.title width="200px")

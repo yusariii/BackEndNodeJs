@@ -31,7 +31,7 @@ module.exports.index = async (req, res) => {
     }
 
     res.render("admin/pages/accounts/index", {
-        pageTitle: "Accounts",
+        pageTitle: "Tài khoản",
         records: records,
         pagination: objectPagination
     })
@@ -41,7 +41,7 @@ module.exports.index = async (req, res) => {
 module.exports.create = async (req, res) => {
     const roles = await Role.find({ deleted: false })
     res.render("admin/pages/accounts/create", {
-        pageTitle: "Create account",
+        pageTitle: "Tạo tài khoản",
         roles: roles
     })
 }
@@ -92,7 +92,7 @@ module.exports.edit = async (req, res) => {
             await Role.find({ deleted: false })
         ])
         res.render("admin/pages/accounts/edit", {
-            pageTitle: "Edit account",
+            pageTitle: "Cập nhật tài khoản",
             record: account,
             roles: roles
         })
@@ -153,9 +153,9 @@ module.exports.detail = async (req, res) => {
         const account = await Account.findOne({ _id: id, deleted: false }).select("-password -token")
         const role = await Role.findOne({ _id: account.role_id, deleted: false })
         res.render("admin/pages/accounts/detail", {
-            pageTitle: account.title,
+            pageTitle: "Chi tiết tài khoản",
             record: account,
-            role: role
+            roleTitle: role.title
         })
     } catch (error) {
         res.redirect(`${systemConfig.prefixAdmin}/accounts`)

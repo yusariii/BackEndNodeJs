@@ -2,120 +2,123 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/back-button.pug
 include ../../mixins/select-tree.pug
+include ../../mixins/no-perm.pug
 block main 
-    +alert-error(5000)
-    +alert-success(5000)
+    if (role.permissions.includes("products-category_edit"))
+        +alert-error(5000)
+        +alert-success(5000)
 
-    +back-button()
+        +back-button()
 
-    h1(class="mb-3") Chỉnh sửa danh mục
+        h1(class="mb-3") #{pageTitle}
 
-    form(
-        action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
-        method="POST"
-        id="form-edit-record"
-        enctype="multipart/form-data"
-    )
-        div(class="form-group")
-            label(for="title") Tiêu đề
-            input(
-                type="text" 
-                class="form-control mb-2"
-                name="title" 
-                id="title"
-                value=record.title
-                required
-            )
-        div(class="form-group")
-            label(for="parent_id") Danh mục cha
-            select(
-                name="parent_id"
-                id="parent_id"
-                class="form-control mb-2"
-            )
-                option(value="" selected disabled) -- Chọn danh mục cha --
-                    if records 
-                        +select-tree(records, 1, record.parent_id)
-        div(class="form-group")
-            label(for="desc") Mô tả
-            textarea(
-                class="form-control textarea-mce mb-2"
-                name="description" 
-                id="desc"
-                rows="4"
-            ) !{record.description}
-        div(class="form-group")
-            label(for="thumbnail") Hình ảnh
-            input(
-                type="file" 
-                class="form-control-file mb-2"
-                name="thumbnail" 
-                id="thumbnail"
-                accept="image/*"
-                style="display: block;"
-                upload-image-input
-            )
-            img(
-                id="img-preview" 
-                src=record.thumbnail ? record.thumbnail : "#"
-                alt="Image Preview" 
-                class="img-preview"
-                upload-image-preview
-            )
-            //- input(
-            //-     type="text" 
-            //-     class="form-control mb-2"
-            //-     name="thumbnail" 
-            //-     id="thumbnail"
-            //- )
-        div(class="form-group")
-            label(for="position") Vị trí
-            input(
-                type="number" 
-                class="form-control mb-2"
-                name="position" 
-                id="position"
-                value=record.position
-                required
-                min="1"
-            )
-        div(class="form-group form-check form-check-inline")
-            input(
-                type="radio"
-                class="form-check-input mb-2"
-                id="statusActive"
-                name="status"
-                value="active"
-                checked=record.status === "active" 
-            )
-            label(
-                class="form-check-label"
-                for="statusActive"
-            ) Hoạt động
-        div(class="form-group form-check form-check-inline")
-            input(
-                type="radio"
-                class="form-check-input mb-2"
-                id="statusInactive"
-                name="status"
-                value="inactive"
-                checked=record.status === "inactive"
-            )
-            label(
-                class="form-check-label"
-                for="statusInactive"
-            ) Dừng hoạt động
-        div(class="form-group")
-            button(
-                type="reset"
-                class="btn btn-danger me-2"
-                reset-button
-            ) Đặt lại
-            button(
-                type="submit"
-                class="btn btn-primary"
-            ) Cập nhật
-            
+        form(
+            action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
+            method="POST"
+            id="form-edit-record"
+            enctype="multipart/form-data"
+        )
+            div(class="form-group")
+                label(for="title") Tiêu đề
+                input(
+                    type="text" 
+                    class="form-control mb-2"
+                    name="title" 
+                    id="title"
+                    value=record.title
+                    required
+                )
+            div(class="form-group")
+                label(for="parent_id") Danh mục cha
+                select(
+                    name="parent_id"
+                    id="parent_id"
+                    class="form-control mb-2"
+                )
+                    option(value="" selected disabled) -- Chọn danh mục cha --
+                        if records 
+                            +select-tree(records, 1, record.parent_id)
+            div(class="form-group")
+                label(for="desc") Mô tả
+                textarea(
+                    class="form-control textarea-mce mb-2"
+                    name="description" 
+                    id="desc"
+                    rows="4"
+                ) !{record.description}
+            div(class="form-group")
+                label(for="thumbnail") Hình ảnh
+                input(
+                    type="file" 
+                    class="form-control-file mb-2"
+                    name="thumbnail" 
+                    id="thumbnail"
+                    accept="image/*"
+                    style="display: block;"
+                    upload-image-input
+                )
+                img(
+                    id="img-preview" 
+                    src=record.thumbnail ? record.thumbnail : "#"
+                    alt="Image Preview" 
+                    class="img-preview"
+                    upload-image-preview
+                )
+                //- input(
+                //-     type="text" 
+                //-     class="form-control mb-2"
+                //-     name="thumbnail" 
+                //-     id="thumbnail"
+                //- )
+            div(class="form-group")
+                label(for="position") Vị trí
+                input(
+                    type="number" 
+                    class="form-control mb-2"
+                    name="position" 
+                    id="position"
+                    value=record.position
+                    required
+                    min="1"
+                )
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input mb-2"
+                    id="statusActive"
+                    name="status"
+                    value="active"
+                    checked=record.status === "active" 
+                )
+                label(
+                    class="form-check-label"
+                    for="statusActive"
+                ) Hoạt động
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input mb-2"
+                    id="statusInactive"
+                    name="status"
+                    value="inactive"
+                    checked=record.status === "inactive"
+                )
+                label(
+                    class="form-check-label"
+                    for="statusInactive"
+                ) Dừng hoạt động
+            div(class="form-group")
+                button(
+                    type="reset"
+                    class="btn btn-danger me-2"
+                    reset-button
+                ) Đặt lại
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Cập nhật
+    else 
+        +no-perm-home(pageTitle)
             
                 
 

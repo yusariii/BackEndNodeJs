@@ -8,7 +8,8 @@ block main
         .card-header 
             div(class="d-flex justify-content-between align-items-center")
                 h1 #{record.fullName}
-                a(href=`${prefixAdmin}/accounts/edit/${record.id}` class="btn btn-warning btn-sm") Sửa
+                if (role.permissions.includes("accounts_edit"))
+                    a(href=`${prefixAdmin}/accounts/edit/${record.id}` class="btn btn-warning btn-sm") Sửa  
         .card-body
             if record.avatar
                 img(src=record.avatar alt=record.fullName width="200px")
@@ -16,8 +17,8 @@ block main
                 p Email: #{record.email}
             if record.phone
                 p Số điện thoại: #{record.email}
-            if role
-                p Vai trò: #{role.title}
+            if roleTitle
+                p Vai trò: #{roleTitle}
             if record.status 
                 p Trạng thái: 
                 if record.status === 'active'
