@@ -6,6 +6,7 @@ include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
 include ../../mixins/no-perm.pug
+include ../../mixins/formatDate.pug
 block main 
     if (role.permissions.includes("products_view"))
 
@@ -55,6 +56,7 @@ block main
                             th Giá
                             th Vị trí
                             th Trạng thái
+                            th Người tạo
                             th Hành động
                         
                     tbody 
@@ -95,6 +97,11 @@ block main
                                                 style="text-decoration: none;"
                                             )
                                                 | #{item.status === "active" ? "Hoạt động" : "Dừng hoạt động"}
+                                    td 
+                                        p #{item.accountFullName}
+                                        if (item.accountFullName)
+                                            p 
+                                                +formatDateTime(item.createdBy.createdAt)
                                     td 
                                         a(
                                             href=`${prefixAdmin}/products/detail/${item.id}` 

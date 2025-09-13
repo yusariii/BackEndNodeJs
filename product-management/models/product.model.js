@@ -21,12 +21,26 @@ const productSchema = new mongoose.Schema({
     stock: Number,
     thumbnail: String,
     status: String,
+    createdBy: {
+        account_id: String,
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    },
+    updatedBy: {
+        account_id: String,
+        updatedAt: Date
+    },
+    deletedBy: {
+        account_id: String,
+        deletedAt: Date
+    },
     deleted: {
         type: Boolean,
         default: false
     },
-    deletedAt: Date
-}, { timestamps: true })
+})
 
 const Product = mongoose.model("Product", productSchema, "products")
 // Product -> Ten Model

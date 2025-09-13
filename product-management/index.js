@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const flash = require('express-flash')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const moment = require('moment')
 require("dotenv").config()
 
 //Import and connect database
@@ -33,6 +34,7 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 //App locals variables
 const systemConfig = require("./config/system")
 app.locals.prefixAdmin = systemConfig.prefixAdmin
+app.locals.moment = moment
 
 //Set views and view engine
 app.set("views", `${__dirname}/views`)
