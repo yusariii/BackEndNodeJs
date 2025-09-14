@@ -1,0 +1,27 @@
+extends ../../layouts/default.pug
+
+block main 
+    h1(class="mb-3") #{pageTitle}
+    div(class="d-flex justify-content-center")
+        div(class="user-info")
+            if user.avatar
+                div(class="text-center")
+                    img(src=user.avatar alt=user.fullName width="200px" class="avatar")
+            if user.fullName
+                p Họ và tên: #{user.fullName}
+            if user.email
+                p Email: #{user.email}
+            if user.phone
+                p Số điện thoại: #{user.phone}
+            if roleTitle
+                p Vai trò: #{roleTitle}
+            if user.status 
+                p Trạng thái: 
+                    if user.status === 'active'
+                        span(class="badge bg-success") Hoạt động
+                    else if user.status === 'inactive'
+                        span(class="badge bg-danger") Dừng hoạt động
+            a(
+                href=`${prefixAdmin}/my-account/edit`
+                class="btn btn-primary"
+            ) Chỉnh sửa thông tin

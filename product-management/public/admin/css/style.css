@@ -109,3 +109,14 @@
     border: 1px solid black;
     object-fit: cover;
 }
+/*End Avatar*/
+
+/*User Info*/
+.user-info{
+    width: 300px;
+    height: auto;
+    padding: 20px 40px;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 10%;
+}

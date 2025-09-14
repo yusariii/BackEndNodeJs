@@ -12,7 +12,8 @@ block main
                     a(href=`${prefixAdmin}/products/edit/${product.id}` class="btn btn-warning btn-sm") Sửa
         .card-body
             if product.thumbnail
-                img(src=product.thumbnail alt=product.title width="200px")
+                div(class="text-center")
+                    img(src=product.thumbnail alt=product.title width="200px")
             if category 
                 p Danh mục: #{category.title}
             if product.description

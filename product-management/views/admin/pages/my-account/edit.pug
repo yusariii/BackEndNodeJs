@@ -1,0 +1,116 @@
+extends ../../layouts/default.pug
+include ../../mixins/back-button.pug
+include ../../mixins/alert.pug
+block main 
+        +back-button()
+
+        h1(class="mb-3") #{pageTitle}
+
+        form(
+            action=`${prefixAdmin}/my-account/edit?_method=PATCH`
+            method="POST"
+            enctype="multipart/form-data"
+        )
+            div(class="form-group")
+                label(for="fullName") Họ và tên
+                input(
+                    type="text" 
+                    class="form-control mb-2"
+                    name="fullName" 
+                    id="fullName"
+                    value=user.fullName
+                    required
+                )
+            div(class="form-group")
+                label(for="email") Email
+                input(
+                    type="text"
+                    class="form-control mb-2"
+                    name="email" 
+                    id="email"
+                    value=user.email
+                    required
+                )
+            div(class="form-group")
+                label(for="password") Mật khẩu
+                input(
+                    type="password"
+                    class="form-control mb-2"
+                    name="password" 
+                    id="password"
+                )
+            div(class="form-group")
+                label(for="phone") Số điện thoại
+                input(
+                    type="text"
+                    class="form-control mb-2"
+                    name="phone" 
+                    id="phone"
+                    value=user.phone
+                    required
+                )
+            div(class="form-group")
+                label(for="avatar") Ảnh đại diện
+                input(
+                    type="file" 
+                    class="form-control-file mb-2"
+                    name="avatar" 
+                    id="avatar"
+                    accept="image/*"
+                    style="display: block;"
+                    upload-image-input
+                )
+                img(
+                    id="img-preview" 
+                    src=user.avatar ? user.avatar : "#"
+                    alt="Image Preview" 
+                    class="img-preview"
+                    upload-image-preview
+                )
+            //- div(class="form-group")
+            //-     label(for="account_id") Vai trò
+            //-     select(
+            //-         name="account_id"
+            //-         id="account_id"
+            //-         class="form-control mb-2"
+            //-     )
+            //-         option(value="" selected disabled) -- Chọn vai trò --
+            //-             if roles
+            //-                 each item in roles 
+            //-                     option(value=item.id selected=(user.role_id == item.id ? true : false)) #{item.title}
+            //- div(class="form-group form-check form-check-inline")
+            //-     input(
+            //-         type="radio"
+            //-         class="form-check-input mb-2"
+            //-         id="statusActive"
+            //-         name="status"
+            //-         value="active"
+            //-         checked=user.status === "active" 
+            //-     )
+            //-     label(
+            //-         class="form-check-label"
+            //-         for="statusActive"
+            //-     ) Hoạt động
+            //- div(class="form-group form-check form-check-inline")
+            //-     input(
+            //-         type="radio"
+            //-         class="form-check-input mb-2"
+            //-         id="statusInactive"
+            //-         name="status"
+            //-         value="inactive"
+            //-         checked=user.status === "inactive"
+            //-     )
+            //-     label(
+            //-         class="form-check-label"
+            //-         for="statusInactive"
+            //-     ) Dừng hoạt động
+            div(class="form-group")
+                button(
+                    type="reset"
+                    class="btn btn-danger me-2"
+                    reset-button
+                ) Nhập lại
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Cập nhật

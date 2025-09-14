@@ -48,12 +48,22 @@ module.exports.index = async (req, res) => {
         .skip(objectPagination.skip)
 
     for (const product of products) {
+        // User Created
         const user = await Account.findOne({
             _id: product.createdBy.account_id
         })
         if (user) {
             product.accountFullName = user.fullName
         }
+        // User Updated
+        const updatedBy = product.updatedBy.slice(-1)[0]
+        if (updatedBy) {
+            const userUpdated = await Account.findOne({
+                _id: updatedBy.account_id
+            })
+            updatedBy.accountFullName = userUpdated.fullName
+        }
+
     }
 
     res.render("admin/pages/products/index", {
@@ -73,9 +83,11 @@ module.exports.changeStatus = async (req, res) => {
 
     await Product.updateOne({ _id: id }, {
         status: status,
-        updatedBy: {
-            account_id: res.locals.user.id,
-            updatedAt: new Date()
+        $push: {
+            updatedBy: {
+                account_id: res.locals.user.id,
+                updatedAt: new Date()
+            }
         }
     })
 
@@ -95,9 +107,11 @@ module.exports.changeMulti = async (req, res) => {
         case "active":
             await Product.updateMany({ _id: { $in: ids } }, {
                 status: "active",
-                updatedBy: {
-                    account_id: res.locals.user.id,
-                    updatedAt: new Date()
+                $push: {
+                    updatedBy: {
+                        account_id: res.locals.user.id,
+                        updatedAt: new Date()
+                    }
                 }
             })
             req.flash('success', `Cập nhật trạng thái ${ids.length} sản phẩm thành công!`)
@@ -105,9 +119,11 @@ module.exports.changeMulti = async (req, res) => {
         case "inactive":
             await Product.updateMany({ _id: { $in: ids } }, {
                 status: "inactive",
-                updatedBy: {
-                    account_id: res.locals.user.id,
-                    updatedAt: new Date()
+                $push: {
+                    updatedBy: {
+                        account_id: res.locals.user.id,
+                        updatedAt: new Date()
+                    }
                 }
             })
             req.flash('success', `Cập nhật trạng thái ${ids.length} sản phẩm thành công!`)
@@ -127,9 +143,11 @@ module.exports.changeMulti = async (req, res) => {
                 let [id, position] = item.split(":")
                 await Product.updateOne({ _id: id }, {
                     position: parseInt(position),
-                    updatedBy: {
-                        account_id: res.locals.user.id,
-                        updatedAt: new Date()
+                    $push: {
+                        updatedBy: {
+                            account_id: res.locals.user.id,
+                            updatedAt: new Date()
+                        }
                     }
                 })
                 req.flash('success', `Cập nhật vị trí ${ids.length} sản phẩm thành công!`)
@@ -232,13 +250,16 @@ module.exports.editProduct = async (req, res) => {
     req.body.discountPercent = parseFloat(req.body.discountPercent)
     req.body.stock = parseInt(req.body.stock)
     req.body.position = parseInt(req.body.position)
-    req.body.updatedBy = {
-        account_id: res.locals.user.id,
-        updatedAt: new Date()
-    }
     const id = req.params.id
     try {
-        await Product.updateOne({ _id: id }, req.body)
+        const updatedBy = {
+            account_id: res.locals.user.id,
+            updatedAt: new Date()
+        }
+        await Product.updateOne({ _id: id }, {
+            ...req.body,
+            $push: { updatedBy: updatedBy }
+        })
         req.flash('success', 'Cập nhật sản phẩm thành công!')
         const backURL = req.get('Referer')
         res.redirect(backURL)

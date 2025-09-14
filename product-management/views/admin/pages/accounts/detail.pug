@@ -12,7 +12,8 @@ block main
                     a(href=`${prefixAdmin}/accounts/edit/${record.id}` class="btn btn-warning btn-sm") Sửa  
         .card-body
             if record.avatar
-                img(src=record.avatar alt=record.fullName width="200px")
+                div(class="text-center")
+                    img(src=record.avatar alt=record.fullName width="200px" class="avatar")
             if record.email
                 p Email: #{record.email}
             if record.phone

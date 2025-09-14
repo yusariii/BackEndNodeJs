@@ -12,7 +12,8 @@ block main
                     a(href=`${prefixAdmin}/products-category/edit/${record.id}` class="btn btn-warning btn-sm") Sửa
         .card-body
             if record.thumbnail
-                img(src=record.thumbnail alt=record.title width="200px")
+                div(class="text-center")
+                    img(src=record.thumbnail alt=record.title width="200px")
             if record.description
                 p !{record.description}
             p Vị trí: <b>#{record.position}</b>

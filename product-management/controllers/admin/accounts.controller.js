@@ -22,7 +22,7 @@ module.exports.index = async (req, res) => {
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip)
 
-    for(const record of records){
+    for (const record of records) {
         const role = await Role.findOne({
             _id: record.role_id,
             deleted: false
@@ -52,8 +52,8 @@ module.exports.createAccount = async (req, res) => {
         email: req.body.email,
         deleted: false
     })
-    
-    if (emailExist.length > 0) {
+
+    if (emailExist) {
         req.flash("error", `Email ${req.body.email} đã tồn tại`)
         const backURL = req.get('Referer')
         res.redirect(backURL)
@@ -106,26 +106,26 @@ module.exports.editAccount = async (req, res) => {
     try {
         const id = req.params.id
         const emailExist = await Account.findOne({
-            _id: { $ne: id},
+            _id: { $ne: id },
             email: req.body.email,
             deleted: false
         })
-        if (emailExist.length > 0) {
+        if (emailExist) {
             req.flash('error', `Email ${req.body.email} đã tồn tại`)
             const backURL = req.get('Referer')
             return res.redirect(backURL)
-        } 
-        if (req.body.password){
+        }
+        if (req.body.password) {
             req.body.password = md5(req.body.password)
         } else {
             delete req.body.password
         }
         await Account.updateOne({ _id: id }, req.body)
-        req.flash('success', 'Cập nhật nhóm quyền thành công!')
+        req.flash('success', 'Cập nhật tài khoản thành công!')
         const backURL = req.get('Referer')
         res.redirect(backURL)
     } catch (error) {
-        req.flash('error', 'Cập nhật nhóm quyền thất bại! Vui lòng thử lại sau.')
+        req.flash('error', 'Cập nhật tài khoản thất bại! Vui lòng thử lại sau.')
         res.redirect(`${systemConfig.prefixAdmin}/accounts`)
     }
 }
