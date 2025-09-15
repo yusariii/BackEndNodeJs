@@ -41,6 +41,32 @@ block main
                             +select-tree(category, 1, product.category_id)
                         else 
                             +select-tree(category)
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input mb-2"
+                    id="featured1"
+                    name="featured"
+                    value="1"
+                    checked=product.featured === "1"       
+                )
+                label(
+                    class="form-check-label"
+                    for="featured1"
+                ) Nổi bật
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input mb-2"
+                    id="featured0"
+                    name="featured"
+                    value="0"
+                    checked=product.featured === "0" 
+                )
+                label(
+                    class="form-check-label"
+                    for="featured"
+                ) Không nổi bật
             div(class="form-group")
                 label(for="desc") Mô tả
                 textarea(

@@ -1,0 +1,12 @@
+include ./product-item.pug
+
+mixin products-grid(products)
+    .row 
+        each item in products
+            .col-4.mb-3 
+                +product-item(item)
+
+//- mixin products-list(products)
+//- ...
+//-         .col-6.mb3
+//-             +product-item(item)
