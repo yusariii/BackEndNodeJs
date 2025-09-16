@@ -1,21 +1,58 @@
 extends ../../layouts/default.pug
 include ../../mixins/back-button.pug
+include ../../mixins/box-head.pug
 block main 
 
-    .container.my-3
-        .row 
-            .col-12
-                +back-button()
-                .card
-                    .card-header 
-                        h1 #{product.title}
-                    .card-body
-                        if product.thumbnail
-                            img(src=product.thumbnail alt=product.title width="200px")
-                        p #{product.description}
-                        p Giá gốc: <b>#{product.price}$</b>
-                        p % Giảm giá: <b>#{product.discountPercentage}%</b>
-                        p Giá mới: <b>#{product.priceNew}$</b>
-                        p Số lượng: <b>#{product.stock}</b>
-                        if product.description
-                            p Mô tả: !{product.description}
+
+    .product-detail 
+        .container.my-5
+            +back-button()
+            .row 
+                .col-6 
+                    .inner-thumb
+                        img(src=product.thumbnail alt=product.title)
+                .col-6 
+                    h1(class="inner-title") #{product.title}
+
+                    if(product.category)
+                        div(class="inner-category")
+                            span Danh mục: 
+                            a(href=`/products/${product.category.slug}`) #{product.category.title}
+                    
+                    if(product.priceNew)
+                        div(class="inner-price-new") #{product.priceNew}$
+
+                    if(product.price)
+                        div(class="inner-price-old") #{product.price}$
+
+                    if(product.discountPercentage)
+                        div(class="inner-discount") Giảm giá: <span>#{product.discountPercentage}%</span>
+
+                    if(product.stock)
+                        div(class="inner-stock") Còn lại: <span>#{product.stock}</span> sản phẩm
+
+                    form(
+                        action=`/cart/add/${product.id}`
+                        method="POST"
+                    )
+                        input(
+                            class="form-control mb-2"
+                            type="number"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            max=product.stock
+                        )
+                        button(
+                            type="submit"
+                            class="btn btn-success d-block"
+                        ) Thêm vào giỏ hàng
+            
+        hr
+
+        if(product.description)
+            .container.my-5
+                .row 
+                    .col-12 
+                        +box-head("Mô tả sản phẩm")
+                        .inner-desc !{product.description}

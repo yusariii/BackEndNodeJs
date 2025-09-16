@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model")
 const ProductCategory = require("../../models/products-category.model")
 const productsHelper = require("../../helpers/products")
+const productsCategoryHelper = require("../../helpers/products-category")
 
 // [GET] /products
 module.exports.index = async (req, res) => {
@@ -9,7 +10,7 @@ module.exports.index = async (req, res) => {
         deleted: false
     }).sort({ position: "desc" })
 
-    const newProducts = productsHelper.calculatePriceNew(products)
+    const newProducts = productsHelper.calculatePriceNewProducts(products)
 
     res.render("client/pages/products/index", {
         pageTitle: "Products",
@@ -27,11 +28,21 @@ module.exports.detail = async (req, res) => {
         }
         const product = await Product.findOne(find)
 
-        product.priceNew = (product.price * (100 - product.discountPercentage) / 100).toFixed(0)
+        productsHelper.calculatePriceNewProduct(product)
+
+        if (product.category_id){
+            const category = await ProductCategory.findOne({
+                _id: product.category_id,
+                deleted: false,
+                status: "active"
+            })
+
+            product.category = category
+        }
 
         res.render("client/pages/products/detail", {
             pageTitle: product.title,
-            product
+            product: product
         })
     } catch (error) {
         return res.redirect("/products")
@@ -49,26 +60,9 @@ module.exports.category = async (req, res) => {
             deleted: false
         })
 
-        const getSubCategory = async (parentId) => {
-            const subs = await ProductCategory.find({
-                deleted: false,
-                status: "active",
-                parent_id: parentId
-            })
-
-            let allSub = [...subs]
-
-            for (const sub of subs) {
-                const child = await getSubCategory(sub.id)
-                allSub = allSub.concat(child)
-            }
-            return allSub
-        }
-
-        const listSubCategory = await getSubCategory(category.id)
+        const listSubCategory = await productsCategoryHelper.getSubCategory(category.id)
 
         const listSubCategoryId = listSubCategory.map(item => item.id)
-
 
         const products = await Product.find({
             deleted: false,
@@ -76,7 +70,7 @@ module.exports.category = async (req, res) => {
             category_id: { $in: [category.id, ...listSubCategoryId] }
         })
 
-        const newProducts = productsHelper.calculatePriceNew(products)
+        const newProducts = productsHelper.calculatePriceNewProducts(products)
         res.render("client/pages/products/index", {
             pageTitle: category.title,
             products: newProducts

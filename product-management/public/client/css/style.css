@@ -153,4 +153,63 @@
 .sub-menu ul li:hover > ul{
     display: block;
 }
+/*End Sub Menu*/
+
+/*Detail*/
+.product-detail .inner-thumb {
+    text-align: center;
+}
+
+.product-detail .inner-thumb img{
+    width: 60%;
+    height: auto;
+}
+
+.product-detail .inner-title{
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.product-detail .inner-category{
+    margin-bottom: 10px;
+}
+
+.product-detail .inner-price-new{
+    color: green;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.product-detail .inner-price-old{
+    text-decoration: line-through;
+    color: red;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.product-detail .inner-discount{
+    margin-bottom: 10px;
+}
+
+.product-detail .inner-discount > span{
+    padding: 3px 6px;
+    color: white;
+    background: red;
+    border-radius: 5px;
+}
+
+.product-detail .inner-stock{
+    margin-bottom: 10px;
+}
+
+.product-detail .inner-stock > span{
+    padding: 3px 6px;
+    color: white;
+    background: green;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
 
