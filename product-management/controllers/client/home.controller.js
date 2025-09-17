@@ -9,7 +9,7 @@ module.exports.index = async (req, res) => {
         deleted: false,
         status: "active"
     }).limit(6)
-    const newFeaturedProducts = productsHelper.calculatePriceNew(featuredProducts)
+    const newFeaturedProducts = productsHelper.calculatePriceNewProducts(featuredProducts)
     // End Featured Products
 
     // Newest Products
@@ -17,7 +17,7 @@ module.exports.index = async (req, res) => {
         deleted: false,
         status: "active"
     }).sort({ position: "desc" }).limit(6)
-    const newNewestProducts = productsHelper.calculatePriceNew(newestProducts)
+    const newNewestProducts = productsHelper.calculatePriceNewProducts(newestProducts)
     // End Newest Products
     res.render("client/pages/home/index", {
         pageTitle: "Home",
