@@ -35,3 +35,5 @@ header.header
                         li(class="sub-menu")
                             a(href=pathProducts) Product
                                 +sub-menu(subMenu, pathProducts) 
+                        li 
+                            a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.totalQuantity : 0})
