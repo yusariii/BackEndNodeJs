@@ -37,17 +37,17 @@ block main
                         if (records.length > 0)
                             each item, index in records
                                 tr 
-                                    td #{pagination.limitItems * (pagination.currentPage - 1) + index + 1}
-                                    td
+                                    td(class="align-middle") #{pagination.limitItems * (pagination.currentPage - 1) + index + 1}
+                                    td(class="align-middle text-center")
                                         img(
                                             class="avatar"
                                             src=item.avatar
                                             alt=item.fullName
                                             )
-                                    td #{item.fullName}
-                                    td #{item.role.title}
-                                    td #{item.email}
-                                    td 
+                                    td(class="align-middle") #{item.fullName}
+                                    td(class="align-middle") #{item.role.title}
+                                    td(class="align-middle") #{item.email}
+                                    td(class="align-middle") 
                                         if (role.permissions.includes("accounts_edit"))
                                             a(href="javascript:;" 
                                                 data-status=item.status
@@ -63,7 +63,7 @@ block main
                                                 style="text-decoration: none;"
                                             )
                                                 |#{item.status === "active" ? "Hoạt động" : "Dừng hoạt động"}
-                                    td 
+                                    td(class="align-middle") 
                                         a(
                                             href=`${prefixAdmin}/accounts/detail/${item.id}` 
                                             class="btn btn-info btn-sm") Chi tiết
