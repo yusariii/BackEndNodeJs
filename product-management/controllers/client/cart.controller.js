@@ -10,8 +10,10 @@ module.exports.index = async (req, res) => {
         _id: cartId
     })
 
-    if (cart.products.length > 0){
-        for(const item of cart.products){
+    let cartTotal = 0
+
+    if (cart.products.length > 0) {
+        for (const item of cart.products) {
             const productId = item.product_id
             const product = await Product.findOne({
                 _id: productId,
@@ -20,8 +22,12 @@ module.exports.index = async (req, res) => {
             }).select("title thumbnail slug price discountPercentage")
             productsHelper.calculatePriceNewProduct(product)
             item.productInfo = product
+            item.total = item.quantity * product.priceNew
+            cartTotal += item.total
         }
     }
+
+    cart.cartTotal = cartTotal
 
     res.render("client/pages/cart/index", {
         pageTitle: "Giỏ hàng",
@@ -72,4 +78,31 @@ module.exports.addProduct = async (req, res) => {
     const backURL = req.get('Referer')
     res.redirect(backURL)
 
+}
+
+// [PATCH] /cart/delete/:id
+module.exports.deleteProduct = async (req, res) => {
+    const productId = req.params.productId
+
+    const product = await Product.findOne({
+        _id: productId,
+        deleted: false,
+        status: "active"
+    })
+
+    const cartId = req.cookies.cartId
+
+    await Cart.updateOne({
+        _id: cartId
+    }, {
+        $pull: {
+            products: {
+                product_id: productId
+            }
+        }
+    })
+
+    req.flash("success", `Đã xóa sản phẩm ${product.title} khỏi giỏ hàng!`)
+    const backURL = req.get('Referer')
+    res.redirect(backURL)
 }

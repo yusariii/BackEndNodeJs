@@ -1,8 +1,12 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 include ../../mixins/products-layout.pug
+include ../../mixins/alert.pug
 
 block main
+
+    +alert-success(5000)
+    +alert-error(5000)
     .container.my-3
         .row 
             .col-12 
@@ -40,18 +44,18 @@ block main
                                             item-id=item.product_id
                                             style="width: 60px"
                                             )
-                                    td(class="align-middle") #{item.productInfo.priceNew * item.quantity}$
+                                    td(class="align-middle") #{item.total}$
                                     td(class="align-middle text-center") 
-                                        button(
+                                        a(
                                             class="btn btn-danger btn-sm"
-                                            href=`/cart/delete/:id`
+                                            href=`/cart/delete/${item.product_id}`
                                             ) Xóa
                         else 
                             p Hiện chưa có sản phẩm trong giỏ hàng
-            h3(class="text-end") Tổng: 1000$
-
-            div(class="text-end mt-3")
-                a(href="/checkout" class="btn btn-success") THANH TOÁN
+            if(cart.products.length > 0)
+                h3(class="text-end") Tổng: #{cart.cartTotal}$
+                div(class="text-end mt-3")
+                    a(href="/checkout" class="btn btn-success") THANH TOÁN
         
         
 
