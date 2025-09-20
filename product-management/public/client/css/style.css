@@ -252,4 +252,23 @@
 }
 /*End Alert*/
 
+/*Avatar*/
+.avatar, .product{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid black;
+    object-fit: cover;
+}
+/*End Avatar*/
 
+/*User Info*/
+.user-info{
+    width: 300px;
+    height: auto;
+    padding: 20px 40px;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 10%;
+}
+/*End User Info*/
