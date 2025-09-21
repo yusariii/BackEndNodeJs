@@ -8,12 +8,12 @@ const orderSchema = new mongoose.Schema({
         phone: String,
         address: String
     },
-    products: {
+    products: [{
         product_id: String,
         price: Number,
         discountPercentage: Number,
         quantity: Number
-    },
+    }],
     deleted: {
         type: Boolean,
         default: false
