@@ -9,4 +9,6 @@ router.post('/add/:productId', controller.addProduct)
 
 router.get('/delete/:productId', controller.deleteProduct)
 
+router.get('/update/:productId/:quantity', controller.updateProduct)
+
 module.exports = router

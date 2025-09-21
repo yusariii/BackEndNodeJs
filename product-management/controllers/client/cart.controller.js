@@ -1,6 +1,8 @@
 const Cart = require("../../models/cart.model")
 const Product = require("../../models/product.model")
 const productsHelper = require("../../helpers/products")
+
+
 // [GET] /cart
 module.exports.index = async (req, res) => {
 
@@ -19,7 +21,7 @@ module.exports.index = async (req, res) => {
                 _id: productId,
                 deleted: false,
                 status: "active"
-            }).select("title thumbnail slug price discountPercentage")
+            }).select("title thumbnail slug price discountPercentage stock")
             productsHelper.calculatePriceNewProduct(product)
             item.productInfo = product
             item.total = item.quantity * product.priceNew
@@ -37,7 +39,7 @@ module.exports.index = async (req, res) => {
 }
 
 
-// [PATCH] /cart/add/:id
+// [POST] /cart/add/:id
 module.exports.addProduct = async (req, res) => {
 
     const productId = req.params.productId
@@ -80,7 +82,8 @@ module.exports.addProduct = async (req, res) => {
 
 }
 
-// [PATCH] /cart/delete/:id
+
+// [GET] /cart/delete/:id
 module.exports.deleteProduct = async (req, res) => {
     const productId = req.params.productId
 
@@ -103,6 +106,26 @@ module.exports.deleteProduct = async (req, res) => {
     })
 
     req.flash("success", `Đã xóa sản phẩm ${product.title} khỏi giỏ hàng!`)
+    const backURL = req.get('Referer')
+    res.redirect(backURL)
+}
+
+
+// [GET] /cart/delete/:id
+module.exports.updateProduct = async (req, res) => {
+    const productId = req.params.productId
+    const quantity = req.params.quantity
+    const cartId = req.cookies.cartId
+
+    await Cart.updateOne({
+        _id: cartId,
+        "products.product_id": productId
+    }, {
+        $set: {
+                "products.$.quantity": quantity
+            }
+    })
+    
     const backURL = req.get('Referer')
     res.redirect(backURL)
 }
