@@ -51,7 +51,9 @@ block main
                                             href=`/cart/delete/${item.product_id}`
                                             ) Xóa
                         else 
-                            p Hiện chưa có sản phẩm trong giỏ hàng
+                            tr
+                                td(colspan="8" class="text-center") 
+                                    p(class="mt-3 mb-3") Hiện chưa có sản phẩm trong giỏ hàng
             if(cart.products.length > 0)
                 h3(class="text-end") Tổng: #{cart.cartTotal}$
                 div(class="text-end mt-3")
