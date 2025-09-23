@@ -33,3 +33,32 @@ module.exports.loginPost = (req, res, next) => {
 
     next()
 }
+
+module.exports.forgotPasswordPost = (req, res, next) => {
+
+    if (!req.body.email) {
+        req.flash('error', 'Vui lòng nhập email!')
+                return res.redirect(`/user/login`)
+    }
+ 
+
+    next()
+}
+
+module.exports.resetPasswordPost = (req, res, next) => {
+
+    if (req.body.password.length < 8) {
+        req.flash('error', 'Mật khẩu phải dài hơn 8 kí tự!')
+        const backURL = req.get('Referer')
+        return res.redirect(backURL)
+    }
+
+    if (req.body.passwordRepeat != req.body.password) {
+        req.flash('error', 'Mật khẩu không khớp!')
+        const backURL = req.get('Referer')
+        return res.redirect(backURL)
+    }
+ 
+
+    next()
+}
