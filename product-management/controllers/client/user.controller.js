@@ -1,4 +1,5 @@
 const User = require("../../models/user.model")
+const Cart = require("../../models/cart.model")
 const ForgotPassword = require("../../models/forgot-password.model")
 const md5 = require("md5")
 
@@ -43,7 +44,7 @@ module.exports.registerPost = async (req, res) => {
 
 // [GET] /user/login
 module.exports.login = async (req, res) => {
-    if (req.locals.user) {
+    if (res.locals.user) {
         res.redirect("/")
     } else {
         res.render("client/pages/user/login", {
@@ -80,7 +81,23 @@ module.exports.loginPost = async (req, res) => {
         return res.redirect(backURL)
     }
 
+    const existCart = await Cart.findOne({
+        user_id: user.id
+    })
+
+    if (!existCart) {
+        await Cart.updateOne({
+            _id: req.cookies.cartId
+        }, {
+            user_id: user.id
+        })
+    } else {
+        res.cookie("cartId", existCart.id)
+    }
+
     res.cookie("tokenUser", user.tokenUser)
+
+
 
     res.redirect("/")
 }
@@ -89,6 +106,7 @@ module.exports.loginPost = async (req, res) => {
 // [GET] /user/logout
 module.exports.logout = async (req, res) => {
     res.clearCookie("tokenUser")
+    res.clearCookie("cartId")
     res.redirect("/")
 }
 
@@ -210,7 +228,7 @@ module.exports.info = async (req, res) => {
             user: res.locals.user
         })
     } else {
-        res.redirect("/")
+        res.redirect("/user/login")
     }
 }
 
@@ -225,7 +243,7 @@ module.exports.infoEdit = async (req, res) => {
         })
 
     } else {
-        res.redirect("/")
+        res.redirect("/user/login")
     }
 }
 
@@ -262,7 +280,7 @@ module.exports.infoEditPatch = async (req, res) => {
         req.flash('success', 'Cập nhật tài khoản thành công!')
         res.redirect(`/user/info`)
     } else {
-        res.redirect(`/`)
+        res.redirect(`/user/login`)
     }
 
 }
