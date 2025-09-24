@@ -3,6 +3,10 @@ const router = express.Router()
 const controller = require("../../controllers/client/user.controller")
 const validate = require("../../validate/client/user.validate")
 
+const multer = require('multer')
+const upload = multer()
+const uploadCloud = require("../../middlewares/client/uploadCloud.middleware")
+
 router.get('/register', controller.register)
 
 router.post('/register', validate.registerPost, controller.registerPost)
@@ -24,5 +28,11 @@ router.post('/password/otp', controller.otpPasswordPost)
 router.get('/password/reset', controller.resetPassword)
 
 router.post('/password/reset', validate.resetPasswordPost, controller.resetPasswordPost)
+
+router.get('/info', controller.info)
+
+router.get('/info/edit', controller.infoEdit)
+
+router.patch('/info/edit', upload.single("avatar"), uploadCloud.upload, validate.editUser, controller.infoEditPatch)
 
 module.exports = router

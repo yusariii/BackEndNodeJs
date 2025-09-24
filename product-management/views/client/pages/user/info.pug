@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    .container.my-3
+        .row 
+            .col-12 
+                +box-head(pageTitle)
+        div(class="d-flex justify-content-center")
+            div(class="user-info")
+                if user.avatar
+                    div(class="text-center")
+                        img(src=user.avatar alt=user.fullName width="200px" class="avatar")
+                if user.fullName
+                    p Họ và tên: #{user.fullName}
+                if user.email
+                    p Email: #{user.email}
+                if user.phone
+                    p Số điện thoại: #{user.phone}
+                if user.address
+                    p Địa chỉ: #{user.address}
+                div(class="mb-2")
+                    a(
+                        href=`/user/info/edit`
+                        class="btn btn-primary"
+                    ) Chỉnh sửa thông tin
+                div
+                    a(
+                        href=`/user/password/reset`
+                        class="btn btn-danger"
+                    ) Đổi mật khẩu

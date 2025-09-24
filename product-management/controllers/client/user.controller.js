@@ -199,3 +199,72 @@ module.exports.resetPasswordPost = async (req, res) => {
     res.redirect("/")
 
 }
+
+
+// [GET] /user/info
+module.exports.info = async (req, res) => {
+
+    if (!req.cookies.tokenUser) {
+        res.redirect("/")
+    } else {
+        const tokenUser = req.cookies.tokenUser
+        const user = await User.findOne({
+            tokenUser: tokenUser
+        }).select("-password")
+        res.render("client/pages/user/info", {
+            pageTitle: "Thông tin tài khoản",
+            user: user
+        })
+    }
+}
+
+
+// [GET] /user/info/edit
+module.exports.infoEdit = async (req, res) => {
+
+    if (!req.cookies.tokenUser) {
+        res.redirect("/")
+    } else {
+        const tokenUser = req.cookies.tokenUser
+        const user = await User.findOne({
+            tokenUser: tokenUser
+        }).select("-password")
+        res.render("client/pages/user/edit-info", {
+            pageTitle: "Chỉnh sửa tài khoản",
+            user: user
+        })
+    }
+}
+
+
+// [PATCH] /user/info/edit
+module.exports.infoEditPatch = async (req, res) => {
+    const tokenUser = req.cookies.tokenUser
+    const emailExist = await User.findOne({
+        tokenUser: { $ne: tokenUser },
+        email: req.body.email,
+        deleted: false,
+        status: "active"
+    })
+    if (emailExist) {
+        req.flash('error', `Email ${req.body.email} đã tồn tại`)
+        const backURL = req.get('Referer')
+        return res.redirect(backURL)
+    }
+
+    const phoneExist = await User.findOne({
+        tokenUser: { $ne: tokenUser },
+        phone: req.body.phone,
+        deleted: false,
+        status: "active"
+    })
+    if (phoneExist) {
+        req.flash('error', `Email ${req.body.email} đã tồn tại`)
+        const backURL = req.get('Referer')
+        return res.redirect(backURL)
+    }
+
+    await User.updateOne({ tokenUser: tokenUser }, req.body)
+    req.flash('success', 'Cập nhật tài khoản thành công!')
+    res.redirect(`/user/info`)
+}
