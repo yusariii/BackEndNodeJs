@@ -1,0 +1,162 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/no-perm.pug
+block main 
+    if (role.permissions.includes("settings-general_view"))
+
+        h1(class="mb-3") #{pageTitle}
+
+        .card.mb-3
+            .card-header Thông tin Website
+            .card-body 
+                form(
+                    action=`${prefixAdmin}/settings/general/edit?_method=PATCH`
+                    method="POST"
+                    enctype="multipart/form-data"
+                )
+                    div(class="form-group ")
+                        label(for="websiteName") Tên Website:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="websiteName"
+                            name="websiteName"
+                            value=(settings ? settings.websiteName : '')
+                        )
+                    div(class="form-group")
+                        label(for="logo") Logo:
+                        input(
+                            type="file" 
+                            class="form-control-file mb-2"
+                            name="logo" 
+                            id="logo"
+                            accept="image/*"
+                            style="display: block;"
+                            upload-image-input
+                        )
+                        img(
+                            id="img-preview" 
+                            src=(settings && settings.logo ? settings.logo : "#")
+                            alt="Image Preview" 
+                            class="img-preview"
+                            upload-image-preview
+                        )
+                    div(class="form-group")
+                        label(for="phone") Số điện thoại:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="phone"
+                            name="phone"
+                            value=(settings ? settings.phone : '')
+                        )
+                    div(class="form-group")
+                        label(for="email") Email:
+                        input(
+                            type="email"
+                            class="form-control mb-2"
+                            id="email"
+                            name="email"
+                            value=(settings ? settings.email : '')
+                        )
+                    div(class="form-group")
+                        label(for="address") Địa chỉ:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="address"
+                            name="address"
+                            value=(settings ? settings.address : '')
+                        )
+                    div(class="form-group")
+                        label(for="copyright") Bản quyền:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="copyright"
+                            name="copyright"
+                            value=(settings ? settings.copyright : '')
+                        )
+                    if (role.permissions.includes("settings-general_edit"))
+                        button(type="submit" class="btn btn-primary mt-2") Cập nhật
+                
+        .card.mb-3
+            .card-header Mạng xã hội
+            .card-body 
+                form(
+                    action=`${prefixAdmin}/settings/general/edit?_method=PATCH`
+                    method="POST"
+                )
+                    div(class="form-group")
+                        label(for="facebook") Facebook:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="facebook"
+                            name="facebook"
+                            value=(settings ? settings.facebook : '')
+                        )
+                    div(class="form-group")
+                        label(for="twitter") Twitter:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="twitter"
+                            name="twitter"
+                            value=(settings ? settings.twitter : '')
+                        )
+                    div(class="form-group")
+                        label(for="instagram") Instagram:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="instagram"
+                            name="instagram"
+                            value=(settings ? settings.instagram : '')
+                        )
+                    div(class="form-group")
+                        label(for="linkedin") LinkedIn:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="linkedin"
+                            name="linkedin"
+                            value=(settings ? settings.linkedin : '')
+                        )
+                    div(class="form-group")
+                        label(for="github") Github:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="github"
+                            name="github"
+                            value=(settings ? settings.github : '')
+                        )
+                    div(class="form-group")
+                        label(for="youtube") YouTube:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="youtube"
+                            name="youtube"
+                            value=(settings ? settings.youtube : '')
+                        )
+                    div(class="form-group")
+                        label(for="tiktok") Tiktok:
+                        input(
+                            type="text"
+                            class="form-control mb-2"
+                            id="tiktok"
+                            name="tiktok"
+                            value=(settings ? settings.tiktok : '')
+                        )
+                    if (role.permissions.includes("settings-general_edit"))
+                        button(type="submit" class="btn btn-primary mt-2") Cập nhật
+
+        .card.mb-3
+            .card-header Đang phát triển
+            .card-body 
+                .row 
+
+    else
+        +no-perm-home(pageTitle)

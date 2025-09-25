@@ -4,8 +4,11 @@ header.header
         .row.align-items-center 
             .col-3 
                 .inner-logo 
-                    a(href="/") 
-                        img(src="/client/image/logo.png", alt="Logo")
+                    .inner-logo-img
+                        a(href="/") 
+                            img(src=settingsGeneral.logo, alt=settingsGeneral.websiteName)
+                    .inner-logo-text
+                        a(href="/") #{settingsGeneral.websiteName}
 
             .col-3 
                 form(

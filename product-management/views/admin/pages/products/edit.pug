@@ -20,7 +20,7 @@ block main
             enctype="multipart/form-data"
         )
             div(class="form-group")
-                label(for="title") Tiêu đề
+                label(for="title") Tiêu đề:
                 input(
                     type="text" 
                     class="form-control mb-2"
@@ -30,7 +30,7 @@ block main
                     required
                 )
             div(class="form-group")
-                label(for="category_id") Danh mục
+                label(for="category_id") Danh mục:
                 select(
                     name="category_id"
                     id="category_id"
@@ -68,7 +68,7 @@ block main
                     for="featured"
                 ) Không nổi bật
             div(class="form-group")
-                label(for="desc") Mô tả
+                label(for="desc") Mô tả:
                 textarea(
                     class="form-control textarea-mce mb-2"
                     name="description" 
@@ -76,7 +76,7 @@ block main
                     rows="4"
                 ) #{product.description}
             div(class="form-group")
-                label(for="price") Giá
+                label(for="price") Giá:
                 input(
                     type="number" 
                     class="form-control mb-2"
@@ -87,7 +87,7 @@ block main
                     required
                 )
             div(class="form-group")
-                label(for="discount") % Giảm giá
+                label(for="discount") % Giảm giá:
                 input(
                     type="number" 
                     class="form-control mb-2"
@@ -98,7 +98,7 @@ block main
                     required
                 )
             div(class="form-group")
-                label(for="stock") Số lượng
+                label(for="stock") Số lượng:
                 input(
                     type="number" 
                     class="form-control mb-2"
@@ -109,7 +109,7 @@ block main
                     required
                 )
             div(class="form-group")
-                label(for="thumbnail") Hình ảnh
+                label(for="thumbnail") Hình ảnh:
                 input(
                     type="file" 
                     class="form-control-file mb-2"
@@ -133,7 +133,7 @@ block main
                 //-     id="thumbnail"
                 //- )
             div(class="form-group")
-                label(for="position") Vị trí
+                label(for="position") Vị trí:
                 input(
                     type="number" 
                     class="form-control mb-2"

@@ -4,7 +4,21 @@
     padding: 10px 0;
 }
 
-.header .inner-logo img{
+.header .inner-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header .inner-logo .inner-logo-text a{
+    font-size: 24px;
+    font-weight: 700;
+    color: cyan;
+    text-decoration: none;
+    font-family: "Dancing Script"
+}
+
+.header .inner-logo .inner-logo-img img{
     max-width: 100%;
     max-height: 50px;
 }
