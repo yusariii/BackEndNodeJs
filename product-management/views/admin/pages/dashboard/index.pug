@@ -1,8 +1,37 @@
 extends ../../layouts/default.pug
 
 block main 
-    h1 #{pageTitle}
+    h1(class="mb-3") #{pageTitle}
 
-    div #{user}
-    div -------------------
-    div #{role}
+    .row 
+        .col-6 
+            .card.mb-4 
+                .card-header Danh mục sản phẩm
+                .card-body
+                    p Số lượng: <b>#{statistics.categoryProduct.total}</b>
+                    p Hoạt động: <b>#{statistics.categoryProduct.active}</b>
+                    p Dừng hoạt động: <b>#{statistics.categoryProduct.inactive}</b>
+
+        .col-6 
+            .card.mb-4 
+                .card-header Sản phẩm
+                .card-body
+                    p Số lượng: <b>#{statistics.product.total}</b>
+                    p Hoạt động: <b>#{statistics.product.active}</b>
+                    p Dừng hoạt động: <b>#{statistics.product.inactive}</b>
+        
+        .col-6 
+            .card.mb-4 
+                .card-header Tài khoản Admin
+                .card-body
+                    p Số lượng: <b>#{statistics.account.total}</b> 
+                    p Hoạt động: <b>#{statistics.account.active}</b>
+                    p Dừng hoạt động: <b>#{statistics.account.inactive}</b>
+
+        .col-6 
+            .card.mb-4 
+                .card-header Người dùng
+                .card-body
+                    p Số lượng: <b>#{statistics.user.total}</b> 
+                    p Hoạt động: <b>#{statistics.user.active}</b> 
+                    p Dừng hoạt động: <b>#{statistics.user.inactive}</b>
