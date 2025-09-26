@@ -18,12 +18,12 @@ module.exports.index = async (req, res) => {
     })
 }
 
-// [GET] /products/detail/:slug
+// [GET] /products/detail/:slugProduct
 module.exports.detail = async (req, res) => {
     try {
         const find = {
             deleted: false,
-            slug: req.params.slug,
+            slug: req.params.slugProduct,
             status: "active"
         }
         const product = await Product.findOne(find)
@@ -51,11 +51,11 @@ module.exports.detail = async (req, res) => {
 }
 
 
-// [GET] /products/:slug
+// [GET] /products/category/:slugCategory
 module.exports.category = async (req, res) => {
     try {
         const category = await ProductCategory.findOne({
-            slug: req.params.slug,
+            slug: req.params.slugCategory,
             status: "active",
             deleted: false
         })

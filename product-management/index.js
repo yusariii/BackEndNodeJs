@@ -49,6 +49,11 @@ app.use(express.static(`${__dirname}/public`))
 //Run router
 route(app)
 routeAdmin(app)
+app.get('/{*any}', (req, res) => {
+    res.render("client/pages/errors/404", {
+        pageTitle: "404 Not Found"
+    })
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
