@@ -1,0 +1,49 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+
+block main
+
+    .container.my-3
+        .row 
+            .col-12 
+                +box-head(pageTitle)
+
+        .row 
+            .col-12 
+                .chat 
+                    .inner-body 
+                        .inner-incomming
+                            .inner-name John Doe
+                            .inner-content 
+                                | Hello, how are you?
+                        .inner-outgoing
+                            .inner-content 
+                                | I'm good, thanks! How about you?
+                        .inner-incomming
+                            .inner-name John Doe
+                            .inner-content 
+                                | I'm doing well, thank you!
+                        .inner-outgoing
+                            .inner-content 
+                                | That's great to hear!
+                        .inner-incomming
+                            .inner-name John Doe
+                            .inner-content 
+                                | What are your plans for the weekend?
+                        .inner-outgoing
+                            .inner-content 
+                                | I'm thinking of going hiking. How about you?
+                        .inner-incomming
+                            .inner-name John Doe
+                            .inner-content 
+                                | That sounds fun! I might join you if that's okay.
+                        .inner-outgoing
+                            .inner-content 
+                                | Absolutely! The more, the merrier.
+                    .inner-footer
+                        form(action="#" class="inner-form")
+                            input(type="text" placeholder="Type your message..." name="content")
+                            button 
+                                i.fa-solid.fa-paper-plane
+        

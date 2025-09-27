@@ -8,7 +8,7 @@ const sendMailHelper = require("../../helpers/sendMail")
 
 // [GET] /user/register
 module.exports.register = async (req, res) => {
-    if (req.locals.user) {
+    if (res.locals.user) {
         res.redirect("/")
     } else {
         res.render("client/pages/user/register", {
