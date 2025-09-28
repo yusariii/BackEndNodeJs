@@ -7,11 +7,22 @@ module.exports.index = async (req, res) => {
 
     _io.once('connection', (socket) => {
         socket.on("CLIENT_SEND_MESSAGE", async (content) => {
+            // Lưu tin nhắn vào database
             const chat = new Chat({
                 user_id: userId,
                 content: content
             })
             await chat.save()
+
+            // Phát tin nhắn đến tất cả các client đang kết nối
+            _io.emit("SERVER_RETURN_MESSAGE", {
+                user_id: userId,
+                content: content,
+                infoUser: {
+                    fullName: res.locals.user.fullName,
+                    avatar: res.locals.user.avatar
+                }
+            })
         })
     });
 
