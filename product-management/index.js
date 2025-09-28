@@ -7,6 +7,8 @@ const flash = require('express-flash')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const moment = require('moment')
+const http = require('http')
+const { Server } = require("socket.io");
 require("dotenv").config()
 
 //Import and connect database
@@ -16,6 +18,14 @@ database.connect()
 //Import router
 const route = require("./routes/client/index.route")
 const routeAdmin = require("./routes/admin/index.route")
+
+//SocketIO
+const server = http.createServer(app);
+const io = new Server(server);
+io.on('connection', (socket) => {
+    console.log('a user connected');
+});
+//End SocketIO
 
 //app and port
 const app = express()
@@ -55,7 +65,7 @@ app.get('/{*any}', (req, res) => {
     })
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
 
