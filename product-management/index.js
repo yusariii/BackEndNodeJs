@@ -19,13 +19,7 @@ database.connect()
 const route = require("./routes/client/index.route")
 const routeAdmin = require("./routes/admin/index.route")
 
-//SocketIO
-const server = http.createServer(app);
-const io = new Server(server);
-io.on('connection', (socket) => {
-    console.log('a user connected');
-});
-//End SocketIO
+
 
 //app and port
 const app = express()
@@ -37,6 +31,12 @@ app.use(cookieParser("asdaksdasdaa"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 const port = process.env.PORT
+
+//SocketIO
+const server = http.createServer(app);
+const io = new Server(server);
+global._io = io;
+//End SocketIO
 
 //TinyMCE
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')))
