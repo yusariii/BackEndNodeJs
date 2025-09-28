@@ -9,12 +9,12 @@ module.exports.requireAuth = async (req, res, next) => {
         }).select("-password")
 
         if (user) {
-            next
+            next()
         } else {
             return res.redirect('/')
         }
     }
     else {
-        return res.redirect('/')
+        return res.redirect('/user/login')
     }
 }
