@@ -24,6 +24,18 @@ module.exports.index = async (req, res) => {
                 }
             })
         })
+
+        // Nhận sự kiện typing từ client
+        socket.on("CLIENT_SEND_TYPING", async (type) => {
+            socket.broadcast.emit("SERVER_RETURN_TYPING", {
+                user_id: userId,
+                infoUser: {
+                    fullName: res.locals.user.fullName,
+                    avatar: res.locals.user.avatar
+                },
+                type: type
+            })
+        })
     });
 
     const chats = await Chat.find({

@@ -1,3 +1,5 @@
+import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
+
 // CLIENT SEND MESSAGE
 const formSendData = document.querySelector(".chat .inner-form")
 if (formSendData) {
@@ -29,4 +31,58 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
         </div>
     `
     body.appendChild(div)
+
+    body.scrollTop = body.scrollHeight
+})
+// End SERVER RETURN MESSAGE
+
+// Scroll to bottom
+const chatBody = document.querySelector(".chat .inner-body")
+if (chatBody) {
+    chatBody.scrollTop = chatBody.scrollHeight
+}
+// End Scroll to bottom
+
+// Toggle Tooltip
+const emojiIcon = document.querySelector('.emoji-icon')
+const tooltip = document.querySelector('.tooltip')
+Popper.createPopper(emojiIcon, tooltip)
+
+emojiIcon.onclick = () => {
+    tooltip.classList.toggle('shown')
+}
+// End Toggle Tooltip
+
+
+// Insert emoji
+const emojiPicker = document.querySelector('emoji-picker')
+if(emojiPicker){
+    const inputChat = document.querySelector('.chat .inner-form input[name="content"]')
+    emojiPicker.addEventListener('emoji-click', event => {
+        const icon = event.detail.unicode
+        inputChat.value += icon
+    })
+}
+// End Insert emoji
+
+// Close tooltip when click outside
+document.addEventListener('click', function(event) {
+    if (!emojiIcon.contains(event.target) && !tooltip.contains(event.target)) {
+        tooltip.classList.remove('shown');
+    }
+});
+// End Close tooltip when click outside
+
+// Typing
+const inputChat = document.querySelector('.chat .inner-form input[name="content"]')
+if(inputChat){
+    inputChat.addEventListener("keyup", () => {
+        socket.emit("CLIENT_SEND_TYPING", "show")
+    })
+}
+// End Typing
+
+// SERVER RETURN TYPING
+socket.on("SERVER_RETURN_TYPING", (data) => {
+    console.log(data)
 })

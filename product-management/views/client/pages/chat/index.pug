@@ -21,37 +21,26 @@ block main
                                         <span class="inner-name"> #{chat.infoUser.fullName} </span>
                                 .inner-content 
                                     | #{chat.content}
-                        //- .inner-incoming
-                        //-     .inner-name John Doe
-                        //-     .inner-content 
-                        //-         | Hello, how are you?
-                        //- .inner-outgoing
-                        //-     .inner-content 
-                        //-         | I'm good, thanks! How about you?
-                        //- .inner-incoming
-                        //-     .inner-name John Doe
-                        //-     .inner-content 
-                        //-         | I'm doing well, thank you!
-                        //- .inner-outgoing
-                        //-     .inner-content 
-                        //-         | That's great to hear!
-                        //- .inner-incoming
-                        //-     .inner-name John Doe
-                        //-     .inner-content 
-                        //-         | What are your plans for the weekend?
-                        //- .inner-outgoing
-                        //-     .inner-content 
-                        //-         | I'm thinking of going hiking. How about you?
-                        //- .inner-incoming
-                        //-     .inner-name John Doe
-                        //-     .inner-content 
-                        //-         | That sounds fun! I might join you if that's okay.
-                        //- .inner-outgoing
-                        //-     .inner-content 
-                        //-         | Absolutely! The more, the merrier.
+                        div(class="inner-typing-list")
+                            div(class="box-typing")
+                                div(class="inner-name") Le Van A
+                                div(class="inner-dots")
+                                    span
+                                    span
+                                    span
+                            div(class="box-typing")
+                                div(class="inner-name") Le Van B
+                                div(class="inner-dots")
+                                    span
+                                    span
+                                    span
                     .inner-footer
                         form(action="#" class="inner-form")
-                            input(type="text" placeholder="Type your message..." name="content")
+                            input(type="text" placeholder="Nhập tin nhắn..." name="content")
+                            span(class="emoji-icon")
+                                i.fa-regular.fa-face-smile
                             button 
                                 i.fa-solid.fa-paper-plane
         
+    div(class="tooltip" role="tooltip")
+        emoji-picker(class="light")
