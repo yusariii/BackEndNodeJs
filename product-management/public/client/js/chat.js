@@ -1,4 +1,12 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
+import { FileUploadWithPreview } from 'https://unpkg.com/file-upload-with-preview/dist/index.js?module';
+
+// Upload images
+const upload = new FileUploadWithPreview('upload-images', {
+    multiple: true,
+    maxFileCount: 5,
+});
+// End Upload images
 
 // CLIENT SEND MESSAGE
 const formSendData = document.querySelector(".chat .inner-form")
@@ -6,9 +14,11 @@ if (formSendData) {
     formSendData.addEventListener("submit", (e) => {
         e.preventDefault()
         const content = e.target.elements.content.value
-        if (content) {
-            socket.emit("CLIENT_SEND_MESSAGE", content)
+        const images = upload.cachedFileArray
+        if (content || images.length > 0) {
+            socket.emit("CLIENT_SEND_MESSAGE", { content, images })
             e.target.elements.content.value = ""
+            upload.resetPreviewPanel()
             socket.emit("CLIENT_SEND_TYPING", "hidden")
         }
     })
@@ -20,17 +30,40 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
     const body = document.querySelector(".chat .inner-body")
     const userId = document.querySelector("[my-id]").getAttribute("my-id")
     const boxListTyping = document.querySelector(".chat .inner-typing-list")
+
     const div = document.createElement("div")
     div.classList.add((data.user_id == userId ? 'inner-outgoing' : 'inner-incoming'))
-    div.innerHTML = `
+
+    let htmlInfo = `
         ${data.user_id != userId ? `
             <div class="inner-info">
                 <img src="${(data.infoUser.avatar) ? data.infoUser.avatar : '/client/image/avatar_default.jpg'}" alt ="${data.infoUser.fullName}"/>
                 <span class="inner-name"> ${data.infoUser.fullName} </span>
             </div>` : ""}
-        <div class="inner-content"> 
-            ${data.content}
-        </div>
+    `
+
+    let htmlContent = ``
+    if (data.content) {
+        htmlContent = `
+            <div class="inner-content"> 
+                ${data.content}
+            </div>
+        `
+    }
+
+    let htmlImages = ``
+    if (data.images && data.images.length > 0) {
+        htmlImages += `<div class="inner-images">`
+
+        for (const image of data.images) {
+            htmlImages += `<img src="${image}"/>`
+        }
+
+        htmlImages += `</div>`
+    }
+    div.innerHTML = `
+        
+        
     `
     body.insertBefore(div, boxListTyping)
 

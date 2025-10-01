@@ -19,8 +19,13 @@ block main
                                     .inner-info
                                         img(src=(chat.infoUser.avatar ? chat.infoUser.avatar : '/client/image/avatar_default.jpg') alt =chat.infoUser.fullName)
                                         <span class="inner-name"> #{chat.infoUser.fullName} </span>
-                                .inner-content 
-                                    | #{chat.content}
+                                if(chat.content)
+                                    .inner-content 
+                                        | #{chat.content}
+                                if(chat.images && chat.images.length > 0)
+                                    .inner-images
+                                        each image in chat.images
+                                            img(src=image)
                         div(class="inner-typing-list")
                             //- div(class="box-typing")
                             //-     div(class="inner-name") Le Van A
@@ -34,10 +39,14 @@ block main
                             //-         span
                             //-         span
                             //-         span
+                    .inner-preview-panel 
+                        div(class="custom-file-container" data-upload-id="upload-images")
                     .inner-footer
                         form(action="#" class="inner-form")
                             input(type="text" placeholder="Nhập tin nhắn..." name="content")
-                            span(class="emoji-icon")
+                            label(class="image-icon ms-3 me-3" for="file-upload-with-preview-upload-images")
+                                i.fa-regular.fa-image
+                            span(class="emoji-icon me-3")
                                 i.fa-regular.fa-face-smile
                             button 
                                 i.fa-solid.fa-paper-plane
