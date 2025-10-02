@@ -4,13 +4,19 @@ doctype html
 html 
     head 
         title= pageTitle
+        //- Bootstrap
         link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css")
         
+        //- Google Fonts
         link(rel='preconnect' href='https://fonts.googleapis.com')
         link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
         link(href='https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap' rel='stylesheet')
 
+        //- File Upload with Preview
         link(rel="stylesheet", href="https://unpkg.com/file-upload-with-preview/dist/style.css")
+
+        //- Viewer.js
+        link(rel="stylesheet" href="https://unpkg.com/viewerjs/dist/viewer.min.css")
 
         link(rel="stylesheet", href="/client/css/style.css")
 
@@ -24,17 +30,21 @@ html
 
         include ../partials/footer.pug
 
+        //- Bootstrap
         script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js")
         script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js")
         
         //- Socket.io
         script(src="/socket.io/socket.io.js")
         script(src="/client/js/socket.js")
-        //- End Socket.io
-
+        
+        //- Emoji Picker Element
         script(type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js")
 
         //- script(src="https://unpkg.com/file-upload-with-preview/dist/file-upload-with-preview.iife.js")
+
+        //- Viewer.js
+        script(src="https://unpkg.com/viewerjs/dist/viewer.min.js")
 
         script(type="module" src="/client/js/chat.js")
 
