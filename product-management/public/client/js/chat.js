@@ -15,6 +15,7 @@ if (formSendData) {
         e.preventDefault()
         const content = e.target.elements.content.value
         const images = upload.cachedFileArray
+
         if (content || images.length > 0) {
             socket.emit("CLIENT_SEND_MESSAGE", { content, images })
             e.target.elements.content.value = ""
@@ -62,7 +63,9 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
         htmlImages += `</div>`
     }
     div.innerHTML = `
-        
+        ${htmlInfo}
+        ${htmlContent}
+        ${htmlImages}
         
     `
     body.insertBefore(div, boxListTyping)

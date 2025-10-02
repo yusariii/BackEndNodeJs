@@ -444,7 +444,7 @@
     margin-right: 5px;
 }
 
-.chat .inner-body .inner-images{
+.chat .inner-body .inner-images img{
     width: 80px;
     height: 80px;
     object-fit: contain;
