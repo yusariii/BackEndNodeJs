@@ -1,6 +1,11 @@
 const User = require("../../models/user.model")
 
+const usersSocket = require("../../sockets/client/users.socket")
+
 module.exports.all = async (req, res) => {
+
+    usersSocket(res)
+
     const userId = res.locals.user.id
     const users = await User.find({
         deleted: false,
