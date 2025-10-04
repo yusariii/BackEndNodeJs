@@ -7,11 +7,24 @@ module.exports.all = async (req, res) => {
     usersSocket(res)
 
     const userId = res.locals.user.id
+
+    const myUser = await User.findOne({
+        _id: userId
+    })
+
+    const requestFriends = myUser.requestFriends
+    const acceptFriends = myUser.acceptFriends
+
     const users = await User.find({
         deleted: false,
         status: "active",
-        _id: { $ne: userId }
+        $and: [
+            { _id: { $nin: requestFriends } },
+            { _id: { $nin: acceptFriends } },
+            { _id: { $ne: userId } }
+        ]
     }).select("id fullName avatar")
+
     res.render("client/pages/users/all", {
         pageTitle: "Danh sách người dùng",
         users: users
@@ -25,13 +38,49 @@ module.exports.friends = async (req, res) => {
 }
 
 module.exports.request = async (req, res) => {
+    usersSocket(res)
+
+    const userId = res.locals.user.id
+
+    const myUser = await User.findOne({
+        _id: userId
+    })
+
+    const requestFriends = myUser.requestFriends
+
+    const users = await User.find({
+        deleted: false,
+        status: "active",
+        _id: { $in: requestFriends }
+    }).select("id fullName avatar")
+
     res.render("client/pages/users/request", {
-        pageTitle: "Lời mời đã gửi"
+        pageTitle: "Lời mời đã gửi",
+        users: users
     })
 }
 
 module.exports.accept = async (req, res) => {
+
+    usersSocket(res)
+
+    const userId = res.locals.user.id
+
+    const myUser = await User.findOne({
+        _id: userId
+    })
+
+    const acceptFriends = myUser.acceptFriends
+
+    const users = await User.find({
+        deleted: false,
+        status: "active",
+        _id: { $in: acceptFriends }
+    }).select("id fullName avatar")
+
+
     res.render("client/pages/users/accept", {
-        pageTitle: "Lời mời kết bạn"
+        pageTitle: "Lời mời kết bạn",
+        users: users
     })
 }

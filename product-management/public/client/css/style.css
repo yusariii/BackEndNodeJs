@@ -601,3 +601,38 @@
 .box-user.add [btn-cancel-friend]{
     display: inline-block;
 }
+
+.box-user [btn-friend-deleted]{
+    display: none;
+}
+
+
+.box-user.refuse [btn-friend-accept]{
+    display: none;
+}
+
+.box-user.refuse [btn-friend-refuse]{
+    display: none;
+}
+
+.box-user.refuse [btn-friend-deleted]{
+    display: inline-block;
+}
+
+
+.box-user [btn-friend-accepted]{
+    display: none;
+}
+
+
+.box-user.accepted [btn-friend-accept]{
+    display: none;
+}
+
+.box-user.accepted [btn-friend-refuse]{
+    display: none;
+}
+
+.box-user.accepted [btn-friend-accepted]{
+    display: inline-block;
+}

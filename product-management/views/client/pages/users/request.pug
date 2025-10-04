@@ -10,4 +10,28 @@ block main
         .row 
             .col-12 
                 +box-head(pageTitle)
+
+        .row 
+            each user in users
+                .col-6
+                    div(class="box-user add")
+                        div(class="inner-avatar")
+                            img(
+                                src=(user.avatar ? user.avatar : "/client/image/avatar_default.jpg")
+                                alt=user.fullName
+                            )
+                        div(class="inner-info")
+                            div(class="inner-name") #{user.fullName}
+                            div(class="inner-buttons")
+                                button(
+                                    class="btn btn-sm btn-primary"
+                                    btn-add-friend=user.id
+                                    ) Kết bạn
+                                button(
+                                    class="btn btn-sm btn-secondary"
+                                    btn-cancel-friend=user.id
+                                    ) Hủy
+
+block script 
+    script(src="/client/js/users.js")
         
