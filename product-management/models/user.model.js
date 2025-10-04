@@ -7,6 +7,14 @@ const userSchema = new mongoose.Schema({
     address: String,
     phone: String,
     avatar: String,
+    requestFriends: Array, // Loi moi da gui
+    acceptFriends: Array, // Loi moi da nhan
+    friendList: [
+        {
+            user_id: String,
+            room_chat_id: String
+        }
+    ],
     tokenUser: {
         type: String,
         default: generateTokenHelper.generateToken(20)
