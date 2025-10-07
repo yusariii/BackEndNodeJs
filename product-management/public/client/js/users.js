@@ -81,10 +81,11 @@ if (badgeAcceptFriendsLength) {
 // End "SERVER_RETURN_ACCEPT_FRIEND_LENGTH"
 
 // "SERVER_RETURN_ACCEPT_FRIEND_INFO"
-const dataUsersAccept = document.querySelector("[data-users-accept]")
-if (dataUsersAccept) {
-    const userId = dataUsersAccept.getAttribute("data-users-accept")
-    socket.on("SERVER_RETURN_ACCEPT_FRIEND_INFO", (data) => {
+socket.on("SERVER_RETURN_ACCEPT_FRIEND_INFO", (data) => {
+    // Xử lí trang lời mời đã nhận (Hiển thị lời mời của A trong lời mời đã nhận của B khi A gửi)
+    const dataUsersAccept = document.querySelector("[data-users-accept]")
+    if (dataUsersAccept) {
+        const userId = dataUsersAccept.getAttribute("data-users-accept")
         if (userId == data.userId) {
             const div = document.createElement("div")
             div.classList.add("col-6")
@@ -138,8 +139,21 @@ if (dataUsersAccept) {
             const buttonAccept = div.querySelector("[btn-friend-accept]")
             acceptFriend(buttonAccept)
         }
-    })
-}
+    }
+
+    // Xử lí trang tất cả (Xóa A trong trang tất cả của B khi A gửi)
+    const dataUsersAll = document.querySelector("[data-users-all]")
+    if (dataUsersAll) {
+        const userId = dataUsersAll.getAttribute("data-user-all")
+        if (userId == data.userId) {
+            const boxUserRemove = dataUsersAll.querySelector(`[user-send-id='${data.infoUserA._id}']`)
+            if (boxUserRemove) {
+                dataUsersAll.removeChild(boxUserRemove)
+            }
+        }
+    }
+})
+
 
 // End "SERVER_RETURN_ACCEPT_FRIEND_INFO"
 
@@ -151,7 +165,7 @@ socket.on("SERVER_RETURN_CANCEL_FRIEND_INFO", (data) => {
         const dataUsersAccept = document.querySelector("[data-users-accept]")
         if (dataUsersAccept) {
             const userIdB = dataUsersAccept.getAttribute("data-users-accept")
-            if(userIdB == data.userIdB){
+            if (userIdB == data.userIdB) {
                 dataUsersAccept.removeChild(boxUserRemove)
             }
         }

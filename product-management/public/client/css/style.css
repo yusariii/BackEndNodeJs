@@ -554,7 +554,7 @@
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 30px;
-    width: fit-content
+    width: 50%
 }
 
 .box-user .inner-avatar{
@@ -635,4 +635,16 @@
 
 .box-user.accepted [btn-friend-accepted]{
     display: inline-block;
+}
+
+.box-user .inner-status{
+    font-size: 12px;
+}
+
+.box-user .inner-status[status="Online"]{
+    color: #00d800;
+}
+
+.box-user .inner-status[status="Offline"]{
+    color: #3535355d;
 }

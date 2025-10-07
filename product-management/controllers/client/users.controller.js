@@ -14,6 +14,8 @@ module.exports.all = async (req, res) => {
 
     const requestFriends = myUser.requestFriends
     const acceptFriends = myUser.acceptFriends
+    const friendList = myUser.friendList
+    const friendListId = friendList.map(item => item.user_id)
 
     const users = await User.find({
         deleted: false,
@@ -21,6 +23,7 @@ module.exports.all = async (req, res) => {
         $and: [
             { _id: { $nin: requestFriends } },
             { _id: { $nin: acceptFriends } },
+            { _id: { $nin: friendListId } },
             { _id: { $ne: userId } }
         ]
     }).select("id fullName avatar")
@@ -32,8 +35,26 @@ module.exports.all = async (req, res) => {
 }
 
 module.exports.friends = async (req, res) => {
+    usersSocket(res)
+
+    const userId = res.locals.user.id
+
+    const myUser = await User.findOne({
+        _id: userId
+    })
+
+    const friendList = myUser.friendList
+    const friendListId = friendList.map(item => item.user_id)
+
+    const users = await User.find({
+        deleted: false,
+        status: "active",
+        _id: { $in: friendListId }
+    }).select("id fullName avatar statusOnline")
+
     res.render("client/pages/users/friends", {
-        pageTitle: "Danh sách bạn bè"
+        pageTitle: "Danh sách bạn bè",
+        users: users
     })
 }
 
