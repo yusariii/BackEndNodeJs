@@ -30,102 +30,131 @@ if (listBtnCancelFriend.length > 0) {
 // End "CLIEND_CANCEL_FRIEND_SEND"
 
 // "CLIEND_REFUSE_FRIEND_SEND"
+const refuseFriend = (button) => {
+    button.addEventListener("click", () => {
+        button.closest(".box-user").classList.add("refuse")
+
+        const userId = button.getAttribute("btn-friend-refuse")
+
+        socket.emit("CLIEND_REFUSE_FRIEND_SEND", userId)
+    })
+}
+
 const listBtnRefuseFriend = document.querySelectorAll("[btn-friend-refuse]")
 if (listBtnRefuseFriend.length > 0) {
     listBtnRefuseFriend.forEach(button => {
-        button.addEventListener("click", () => {
-            button.closest(".box-user").classList.add("refuse")
-
-            const userId = button.getAttribute("btn-friend-refuse")
-
-            socket.emit("CLIEND_REFUSE_FRIEND_SEND", userId)
-        })
+        refuseFriend(button)
     })
 }
 // End "CLIEND_REFUSE_FRIEND_SEND"
 
 
 // "CLIEND_ACCEPT_FRIEND_SEND"
+const acceptFriend = (button) => {
+    button.addEventListener("click", () => {
+        button.closest(".box-user").classList.add("accepted")
+
+        const userId = button.getAttribute("btn-friend-accept")
+
+        socket.emit("CLIEND_ACCEPT_FRIEND_SEND", userId)
+    })
+}
 const listBtnAcceptFriend = document.querySelectorAll("[btn-friend-accept]")
 if (listBtnAcceptFriend.length > 0) {
     listBtnAcceptFriend.forEach(button => {
-        button.addEventListener("click", () => {
-            button.closest(".box-user").classList.add("accepted")
-
-            const userId = button.getAttribute("btn-friend-accept")
-
-            socket.emit("CLIEND_ACCEPT_FRIEND_SEND", userId)
-        })
+        acceptFriend(button)
     })
 }
 // End "CLIEND_ACCEPT_FRIEND_SEND"
 
-// "CLIENT_RETURN_ACCEPT_FRIEND_LENGTH"
+// "SERVER_RETURN_ACCEPT_FRIEND_LENGTH"
 const badgeAcceptFriendsLength = document.querySelector("[badge-accept-friend]")
 if (badgeAcceptFriendsLength) {
     const userId = badgeAcceptFriendsLength.getAttribute("badge-accept-friend")
-    socket.on("CLIENT_RETURN_ACCEPT_FRIEND_LENGTH", (data) => {
+    socket.on("SERVER_RETURN_ACCEPT_FRIEND_LENGTH", (data) => {
         if (userId == data.userId) {
             badgeAcceptFriendsLength.innerHTML = `${data.acceptFriendsLength}`
         }
     })
 }
 
-// End "CLIENT_RETURN_ACCEPT_FRIEND_LENGTH"
+// End "SERVER_RETURN_ACCEPT_FRIEND_LENGTH"
 
-// "CLIENT_RETURN_ACCEPT_FRIEND_INFO"
+// "SERVER_RETURN_ACCEPT_FRIEND_INFO"
 const dataUsersAccept = document.querySelector("[data-users-accept]")
 if (dataUsersAccept) {
     const userId = dataUsersAccept.getAttribute("data-users-accept")
-    socket.on("CLIENT_RETURN_ACCEPT_FRIEND_INFO", (data) => {
+    socket.on("SERVER_RETURN_ACCEPT_FRIEND_INFO", (data) => {
         if (userId == data.userId) {
             const div = document.createElement("div")
+            div.classList.add("col-6")
+            div.setAttribute("user-send-id", data.infoUserA._id)
             div.innerHTML = `
-                <div class="col-6">
-                    <div class="box-user">
+                <div class="box-user">
                     <div class="inner-avatar">
                         <img
                         src="${data.infoUserA.avatar ? data.infoUserA.avatar : '/client/image/avatar_default.jpg'}"
                         alt="${data.infoUserA.fullName}"
                         />
                     </div>
-                    <div class="inner-info">
-                        <div class="inner-name">${data.infoUserA.fullName}</div>
-                        <div class="inner-buttons">
-                        <button
-                            class="btn btn-sm btn-primary me-1"
-                            btn-friend-accept="${data.infoUserA._id}"
-                        >
-                            Chấp nhận
-                        </button>
-                        <button
-                            class="btn btn-sm btn-secondary"
-                            btn-friend-refuse="${data.infoUserA._id}"
-                        >
-                            Xóa
-                        </button>
-                        <button
-                            class="btn btn-sm btn-secondary"
-                            btn-friend-deleted
-                            disabled
-                        >
-                            Đã xóa
-                        </button>
-                        <button
-                            class="btn btn-sm btn-primary"
-                            btn-friend-accepted
-                            disabled
-                        >
-                            Đã chấp nhận
-                        </button>
-                        </div>
+                <div class="inner-info">
+                    <div class="inner-name">${data.infoUserA.fullName}</div>
+                    <div class="inner-buttons">
+                    <button
+                        class="btn btn-sm btn-primary me-1"
+                        btn-friend-accept="${data.infoUserA._id}"
+                    >
+                        Chấp nhận
+                    </button>
+                    <button
+                        class="btn btn-sm btn-secondary"
+                        btn-friend-refuse="${data.infoUserA._id}"
+                    >
+                        Xóa
+                    </button>
+                    <button
+                        class="btn btn-sm btn-secondary"
+                        btn-friend-deleted
+                        disabled
+                    >
+                        Đã xóa
+                    </button>
+                    <button
+                        class="btn btn-sm btn-primary"
+                        btn-friend-accepted
+                        disabled
+                    >
+                        Đã chấp nhận
+                    </button>
                     </div>
-                    </div>
+                </div>
                 </div>
             `
             dataUsersAccept.appendChild(div)
+
+            const buttonRefuse = div.querySelector("[btn-friend-refuse]")
+            refuseFriend(buttonRefuse)
+
+            const buttonAccept = div.querySelector("[btn-friend-accept]")
+            acceptFriend(buttonAccept)
         }
     })
 }
 
-// End "CLIENT_RETURN_ACCEPT_FRIEND_INFO"
+// End "SERVER_RETURN_ACCEPT_FRIEND_INFO"
+
+// "SERVER_RETURN_CANCEL_FRIEND_INFO"
+socket.on("SERVER_RETURN_CANCEL_FRIEND_INFO", (data) => {
+    const userIdA = data.userIdA
+    const boxUserRemove = document.querySelector(`[user-send-id='${userIdA}']`)
+    if (boxUserRemove) {
+        const dataUsersAccept = document.querySelector("[data-users-accept]")
+        if (dataUsersAccept) {
+            const userIdB = dataUsersAccept.getAttribute("data-users-accept")
+            if(userIdB == data.userIdB){
+                dataUsersAccept.removeChild(boxUserRemove)
+            }
+        }
+    }
+})
+// End "SERVER_RETURN_CANCEL_FRIEND_INFO"

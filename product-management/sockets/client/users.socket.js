@@ -49,7 +49,7 @@ module.exports = (res) => {
             const infoUserA = await User.findOne({
                 _id: myUserId
             }).select("id fullName avatar")
-            socket.broadcast.emit("CLIENT_RETURN_ACCEPT_FRIEND_INFO", {
+            socket.broadcast.emit("SERVER_RETURN_ACCEPT_FRIEND_INFO", {
                 userId: userId,
                 infoUserA: infoUserA
             })
@@ -92,9 +92,15 @@ module.exports = (res) => {
                 _id: userId
             })
             const acceptFriendsLength = infoUserB.acceptFriends.length
-            socket.broadcast.emit("CLIENT_RETURN_ACCEPT_FRIEND_LENGTH", {
+            socket.broadcast.emit("SERVER_RETURN_ACCEPT_FRIEND_LENGTH", {
                 userId: userId,
                 acceptFriendsLength: acceptFriendsLength
+            })
+
+            // Lay id cua A tra cho B
+            socket.broadcast.emit("SERVER_RETURN_CANCEL_FRIEND_INFO", {
+                userIdB: userId,
+                userIdA: myUserId
             })
         })
 
@@ -122,7 +128,7 @@ module.exports = (res) => {
                 requestFriends: myUserId
             })
 
-            if(existIdBinA){
+            if(existIdAinB){
                 await User.updateOne({
                     _id: userId
                 }, {
@@ -148,7 +154,7 @@ module.exports = (res) => {
                 }, {
                     $push: {
                         friendList: {
-                            userId: userId,
+                            user_id: userId,
                             room_chat_id: ""
                         }
                     },
@@ -162,13 +168,13 @@ module.exports = (res) => {
                 requestFriends: myUserId
             })
 
-            if(existIdBinA){
+            if(existIdAinB){
                 await User.updateOne({
                     _id: userId
                 }, {
                     $push: {
                         friendList: {
-                            userId: myUserId,
+                            user_id: myUserId,
                             room_chat_id: ""
                         }
                     },
