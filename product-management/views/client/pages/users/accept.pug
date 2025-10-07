@@ -11,7 +11,7 @@ block main
             .col-12 
                 +box-head(pageTitle)
         
-        .row 
+        .row(data-users-accept=user.id)
             each user in users
                 .col-6
                     div(class="box-user")
@@ -24,7 +24,7 @@ block main
                             div(class="inner-name") #{user.fullName}
                             div(class="inner-buttons")
                                 button(
-                                    class="btn btn-sm btn-primary"
+                                    class="btn btn-sm btn-primary me-1"
                                     btn-friend-accept=user.id
                                     ) Chấp nhận
                                 button(

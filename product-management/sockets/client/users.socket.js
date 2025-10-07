@@ -34,8 +34,26 @@ module.exports = (res) => {
                     $push: {requestFriends: userId}
                 })
             }
-        })
 
+            // Tra ve acceptFriends.length cua B
+            const infoUserB = await User.findOne({
+                _id: userId
+            })
+            const acceptFriendsLength = infoUserB.acceptFriends.length
+            socket.broadcast.emit("CLIENT_RETURN_ACCEPT_FRIEND_LENGTH", {
+                userId: userId,
+                acceptFriendsLength: acceptFriendsLength
+            })
+
+            // Lay info cua A in ra acceptFriends cua B
+            const infoUserA = await User.findOne({
+                _id: myUserId
+            }).select("id fullName avatar")
+            socket.broadcast.emit("CLIENT_RETURN_ACCEPT_FRIEND_INFO", {
+                userId: userId,
+                infoUserA: infoUserA
+            })
+        })
 
         // Chuc nang huy yeu cau
         socket.on("CLIEND_CANCEL_FRIEND_SEND", async (userId) => {
@@ -68,6 +86,16 @@ module.exports = (res) => {
                     $pull: {requestFriends: userId}
                 })
             }
+
+            // Tra ve acceptFriends.length cua B
+            const infoUserB = await User.findOne({
+                _id: userId
+            })
+            const acceptFriendsLength = infoUserB.acceptFriends.length
+            socket.broadcast.emit("CLIENT_RETURN_ACCEPT_FRIEND_LENGTH", {
+                userId: userId,
+                acceptFriendsLength: acceptFriendsLength
+            })
         })
 
         // Chuc nang tu choi loi moi ket ban
