@@ -172,3 +172,16 @@ socket.on("SERVER_RETURN_CANCEL_FRIEND_INFO", (data) => {
     }
 })
 // End "SERVER_RETURN_CANCEL_FRIEND_INFO"
+
+
+// "SERVER_RETURN_USER_ONLINE"
+socket.on("SERVER_RETURN_USER_STATUS", (data) => {
+    const dataUsersFriend = document.querySelector('[data-users-friend]')
+    if(dataUsersFriend){
+        const friendBox = dataUsersFriend.querySelector(`[friend-id='${data.userId}']`)
+        if (friendBox){
+            friendBox.querySelector("[status]").setAttribute("status", data.status)
+        }
+    }
+})
+// End "SERVER_RETURN_USER_ONLINE"
