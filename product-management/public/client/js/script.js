@@ -1,3 +1,5 @@
+
+
 // Show Alert
 const showAlert = document.querySelector("[show-alert]")
 if (showAlert) {
@@ -49,3 +51,9 @@ if (imgInput && imgPreview) {
     })
 }
 // End Upload Image
+
+// Event detect close tab
+window.addEventListener("beforeunload",  () => {
+    socket.emit("CLIENT_CLOSE_WEB", "test")
+})
+// End Event detect close tab

@@ -10,19 +10,6 @@ module.exports.infoUser = async (req, res, next) => {
 
         if (user) {
             res.locals.user = user
-            _io.once('connection', (socket) => {
-                socket.on('disconnect', async () => {
-                    await User.updateOne({
-                        _id: user.id
-                    }, {
-                        statusOnline: "Offline"
-                    })
-                    socket.broadcast.emit("SERVER_RETURN_USER_STATUS", {
-                        userId: user.id,
-                        status: "Offline"
-                    })
-                })
-            })
         } else {
             res.clearCookie("tokenUser")
         }
