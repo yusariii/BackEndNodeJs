@@ -6,6 +6,7 @@ module.exports = (req, res) => {
     const userId = res.locals.user.id
     const roomChatId = req.params.roomChatId
     _io.once('connection', (socket) => {
+        socket.join(roomChatId)
         socket.on("CLIENT_SEND_MESSAGE", async (data) => {
             const content = data.content
             let images = [] 
@@ -25,7 +26,7 @@ module.exports = (req, res) => {
             await chat.save()
 
             // Phát tin nhắn đến tất cả các client đang kết nối
-            _io.emit("SERVER_RETURN_MESSAGE", {
+            _io.to(roomChatId).emit("SERVER_RETURN_MESSAGE", {
                 user_id: userId,
                 content: content,
                 infoUser: {
@@ -38,7 +39,7 @@ module.exports = (req, res) => {
 
         // Nhận sự kiện typing từ client
         socket.on("CLIENT_SEND_TYPING", async (type) => {
-            socket.broadcast.emit("SERVER_RETURN_TYPING", {
+            socket.broadcast.to(roomChatId).emit("SERVER_RETURN_TYPING", {
                 user_id: userId,
                 infoUser: {
                     fullName: res.locals.user.fullName,

@@ -10,7 +10,11 @@ const roomChatSchema = new mongoose.Schema({
             user_id: String,
             role: String // Super Admin, Admin, User
         }
-    ]
+    ],
+    deleted: {
+        type: Boolean,
+        default: false
+    },
 }, { timestamps: true })
 
 const RoomChat = mongoose.model("RoomChat", roomChatSchema, "room-chats")
