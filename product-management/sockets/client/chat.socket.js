@@ -2,8 +2,9 @@ const Chat = require("../../models/chat.model")
 const uploadToCloud = require("../../helpers/uploadToCloud")
 
 
-module.exports = (res) => {
+module.exports = (req, res) => {
     const userId = res.locals.user.id
+    const roomChatId = req.params.roomChatId
     _io.once('connection', (socket) => {
         socket.on("CLIENT_SEND_MESSAGE", async (data) => {
             const content = data.content
@@ -18,6 +19,7 @@ module.exports = (res) => {
             const chat = new Chat({
                 user_id: userId,
                 content: content,
+                room_chat_id: roomChatId,
                 images: images
             })
             await chat.save()
