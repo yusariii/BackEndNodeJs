@@ -1,0 +1,45 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    .container.my-3
+        .row 
+            .col-12 
+                +box-head(pageTitle)
+
+        .row 
+            .col-12 
+                form(
+                    action="/room-chat/create"
+                    method="POST"
+                )
+                    div(class="form-group mb-2")
+                        label(for="title") Tieu de
+                        input(
+                            type="text"
+                            class="form-control"
+                            name="title"
+                            id="title"
+                            required
+                        )
+                    div(class="form-group mb-2")
+                        label Them thanh vien
+                        each friend in friendList
+                            div(class="form-check")
+                                input(
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="userIds"
+                                    id=`user-${friend.user_id}`
+                                    value=friend.user_id
+                                    required
+                                )
+                                label(
+                                    class="form-check-label"
+                                    for=`user-${friend.user_id}`
+                                ) #{friend.infoFriend.fullName}
+                    div(class="form-group")
+                        button(
+                            type="submit"
+                            class="btn btn-primary"
+                        ) Tao

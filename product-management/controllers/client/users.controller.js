@@ -37,11 +37,7 @@ module.exports.all = async (req, res) => {
 module.exports.friends = async (req, res) => {
     usersSocket(res)
 
-    const userId = res.locals.user.id
-
-    const myUser = await User.findOne({
-        _id: userId
-    })
+    const myUser = res.locals.user
 
     const friendList = myUser.friendList
     const friendListId = friendList.map(item => item.user_id)

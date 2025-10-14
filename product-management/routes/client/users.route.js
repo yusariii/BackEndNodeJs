@@ -1,15 +1,13 @@
 const express = require("express")
 const router = express.Router()
 const controller = require("../../controllers/client/users.controller")
-const authMiddleware = require("../../middlewares/client/auth.middleware")
 
+router.get('/all',  controller.all)
 
-router.get('/all', authMiddleware.requireAuth, controller.all)
+router.get('/friends',  controller.friends)
 
-router.get('/friends', authMiddleware.requireAuth, controller.friends)
+router.get('/request',  controller.request)
 
-router.get('/request', authMiddleware.requireAuth, controller.request)
-
-router.get('/accept', authMiddleware.requireAuth, controller.accept)
+router.get('/accept', controller.accept)
 
 module.exports = router
