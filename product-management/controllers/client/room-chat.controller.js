@@ -6,23 +6,17 @@ const chatSocket = require("../../sockets/client/chat.socket")
 
 // [GET] /room-chat
 module.exports.index = async (req, res) => {
-    const roomChatId = req.params.roomChatId
+    const userId = res.locals.user.id
 
-    chatSocket(req, res)
-
-    const chats = await Chat.find({
+    const listRoomChat = await RoomChat.find({
+        typeRoom: "group",
         deleted: false,
-        room_chat_id: roomChatId
+        "users.user_id": userId
     })
-
-    for (const chat of chats) {
-        const user = await User.findById(chat.user_id).select("fullName avatar")
-        chat.infoUser = user
-    }
 
     res.render("client/pages/room-chat/index", {
         pageTitle: "Tin nhắn",
-        chats: chats
+        listRoomChat: listRoomChat
     })
 }
 
