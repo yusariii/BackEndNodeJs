@@ -8,7 +8,7 @@ const chatSocket = require("../../sockets/client/chat.socket")
 module.exports.index = async (req, res) => {
     const roomChatId = req.params.roomChatId
 
-    chatSocket(req, res)    
+    chatSocket(req, res)
 
     const chats = await Chat.find({
         deleted: false,
@@ -32,7 +32,7 @@ module.exports.create = async (req, res) => {
     const myUser = res.locals.user
 
     const friendList = myUser.friendList
-    
+
     for (const friend of friendList) {
         const infoFriend = await User.findOne({
             _id: friend.user_id,
@@ -65,7 +65,12 @@ module.exports.createPost = async (req, res) => {
     }
 
     dataRoom.users.push({
-            user_id: res.locals.user.id,
-            role: "superAdmin"
-        })
+        user_id: res.locals.user.id,
+        role: "superAdmin"
+    })
+
+    const roomChat = new RoomChat(dataRoom)
+    roomChat.save()
+
+    res.redirect(`chat/${roomChat.id}`)
 }
