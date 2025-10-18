@@ -21,9 +21,11 @@ io.on('connection', (socket) => {
     console.log("Message from client:", msg);
 
     // A gửi lên, chỉ A nhận được
+    // Ví dụ: Tin nhắn lỗi, chỉ gửi lại cho người gửi
     // socket.emit("SERVER_RETURN_MSG", msg);
 
     // A gửi lên, cả A, B, C đều nhận được
+    // Ví dụ: Tin nhắn chung, gửi cho tất cả mọi người
     // io.emit("SERVER_RETURN_MSG", msg);
 
     // A gửi lên, B, C nhận được, trừ A
