@@ -1,5 +1,5 @@
 const Task = require("../models/task.model")
-
+const pagiHelper = require("../../helper/pagination")
 
 module.exports.index = async (req, res) => {
     const find = {
@@ -10,14 +10,29 @@ module.exports.index = async (req, res) => {
         find.status = req.query.status
     }
 
+
+    // Pagi
+    const initPagi = {
+        currentPage: 1,
+        limitItems: 2
+    }
+    const countTask = await Task.countDocuments(find)
+    const objectPagi = pagiHelper(
+        initPagi,
+        req.query,
+        countTask
+    )
+    // End Pagi
+
+    // Sort
     const sort = {}
 
     if (req.query.sortKey && req.query.sortValue){
         sort[req.query.sortKey] = req.query.sortValue
     }
+    // End Sort
 
-
-    const tasks = await Task.find(find).sort(sort)
+    const tasks = await Task.find(find).sort(sort).limit(objectPagi.limitItems).skip(objectPagi.skip)
     res.json(tasks)
 }
 
