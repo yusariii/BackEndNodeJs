@@ -2,30 +2,14 @@ const express = require("express")
 require("dotenv").config()
 const database = require("./config/database")
 
-const Task = require("./models/task.model")
-
 database.connect()
 
 const app = express()
 const port = process.env.PORT
 
-app.get("/tasks", async (req, res) => {
-    const tasks = await Task.find({
-        deleted: false
-    })
-    res.json(tasks)
-})
+const route = require("./api/v1/routes/index.route")
 
-
-app.get("/tasks/detail/:id", async (req, res) => {
-    const id = req.params.id
-    const task = await Task.findOne({
-        deleted: false,
-        _id: id
-    })
-    res.json(task)
-})
-
+route(app)
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
 })
