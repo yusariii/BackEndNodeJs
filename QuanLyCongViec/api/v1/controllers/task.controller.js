@@ -56,3 +56,28 @@ module.exports.detail = async (req, res) => {
         res.json("Not found!")
     }
 }
+
+module.exports.changeStatus = async (req, res) => {
+    try {
+        const id = req.params.id
+        const status = req.body.status
+        await Task.updateOne({
+            _id: id
+        }, {
+            status: status
+        })
+
+        res.json({
+            code: 200,
+            message: "Cap nhat thanh cong"
+        })
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Khong ton tai"
+        })
+    }
+
+
+
+}
