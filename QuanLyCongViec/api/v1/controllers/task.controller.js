@@ -77,7 +77,69 @@ module.exports.changeStatus = async (req, res) => {
             message: "Khong ton tai"
         })
     }
+}
+
+module.exports.changeMulti = async (req, res) => {
+    try {
+        const { ids, key, value } = req.body
+        switch (key) {
+            case "status":
+                await Task.updateMany({
+                    _id: {
+                        $in: ids
+                    }
+                }, {
+                    status: value
+                })
+                res.json({
+                    code: 200,
+                    message: "Cập nhật nhiều công việc thành công"
+                })
+                break;
+            case "deleted":
+                await Task.updateMany({
+                    _id: {
+                        $in: ids
+                    }
+                }, {
+                    deleted: value
+                })
+                res.json({
+                    code: 200,
+                    message: "Cập nhật nhiều công việc thành công"
+                })
+                break;
+            default:
+                res.json({
+                    code: 400,
+                    message: "Cập nhật nhiều công việc thất bại"
+                })
+                break;
+        }
+
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Cập nhật nhiều công việc thất bại"
+        })
+    }
+}
 
 
-
+module.exports.create = async (req, res) => {
+    try {
+        const task = new Task(
+            req.body
+        )
+        await task.save()
+        res.json({
+            code: 200,
+            message: "Tạo công việc thành công"
+        })
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Tạo công việc thất bại"
+        })
+    }
 }
